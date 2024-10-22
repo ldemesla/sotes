@@ -27,4 +27,40 @@ export const postRouter = createTRPCRouter({
 
     return post ?? null;
   }),
+
+  translateAudio: publicProcedure
+    .input(z.object({ audioData: z.string() }))
+    .mutation(async ({ input }) => {
+      const translateAudio = async (audioData: string): Promise<string> => {
+        const response = await fetch(
+          "https://api.openai.com/v1/audio/transcriptions",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+              "Content-Type": "multipart/form-data",
+            },
+            body: JSON.stringify({
+              file: audioData,
+              model: "whisper-1",
+            }),
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to translate audio");
+        }
+
+        const result = await response.json();
+        return result.text;
+      };
+
+      try {
+        const translatedText = await translateAudio(input.audioData);
+        return { success: true, text: translatedText };
+      } catch (error) {
+        console.error("Error translating audio:", error);
+        return { success: false, error: "Failed to translate audio" };
+      }
+    }),
 });
