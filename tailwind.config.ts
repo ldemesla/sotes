@@ -8,9 +8,13 @@ const config: Config = {
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        layout: {
+          DEFAULT: "hsl(var(--layout))",
+          foreground: "hsla(var(--layout-foreground))",
+        },
         card: {
           DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          foreground: "hsla(var(--card-foreground))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
