@@ -8,7 +8,7 @@ import { Button } from "./ui/button";
 import type { ItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
 import { RealtimeClient } from "@openai/realtime-api-beta";
 import { cn } from "../../lib/utils";
-// import logo from "./logo.svg";
+import logo from "./logo.svg";
 
 /**
  * Running a local relay server will allow you to hide your API key
@@ -181,6 +181,7 @@ export const VoiceRecorder = () => {
                   : "self-start bg-[#CC155E33] text-[#CC155E]"
               )}
             >
+              {item.role === "assistant" && <img src={logo.src} alt="logo" />}
               {item.formatted.transcript}
             </div>
           )
