@@ -1,7 +1,7 @@
 import { HydrateClient, api } from "~/trpc/server";
 
 import { LatestPost } from "~/app/_components/post";
-import Link from "next/link";
+import { VoiceRecorder } from "./_components/record-voice";
 
 export default async function Home() {
   const hello = await api.post.hello({ text: "from tRPC" });
@@ -15,6 +15,8 @@ export default async function Home() {
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
             Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
           </h1>
+
+          <VoiceRecorder />
 
           <div className="flex flex-col items-center gap-2">
             <p className="text-2xl text-white">
