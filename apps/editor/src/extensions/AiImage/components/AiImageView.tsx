@@ -1,19 +1,18 @@
-import { Extension, NodeViewWrapper, NodeViewWrapperProps } from '@tiptap/react'
-import { useCallback, useMemo, useState } from 'react'
-import toast from 'react-hot-toast'
-import { v4 as uuid } from 'uuid'
-import { ImageOptions } from '@tiptap-pro/extension-ai'
-
 import * as Dropdown from '@radix-ui/react-dropdown-menu'
 
-import { Button } from '@/components/ui/Button'
-import { Loader } from '@/components/ui/Loader'
+import { Extension, NodeViewWrapper, NodeViewWrapperProps } from '@tiptap/react'
 import { Panel, PanelHeadline } from '@/components/ui/Panel'
-import { Textarea } from '@/components/ui/Textarea'
-import { Icon } from '@/components/ui/Icon'
-import { Surface } from '@/components/ui/Surface'
+import { useCallback, useMemo, useState } from 'react'
+
+import { Button } from '@/components/ui/Button'
 import { DropdownButton } from '@/components/ui/Dropdown'
+import { Icon } from '@/components/ui/Icon'
+import { Loader } from '@/components/ui/Loader'
+import { Surface } from '@/components/ui/Surface'
+import { Textarea } from '@/components/ui/Textarea'
 import { Toolbar } from '@/components/ui/Toolbar'
+import toast from 'react-hot-toast'
+import { v4 as uuid } from 'uuid'
 
 const imageStyles = [
   { name: 'photorealistic', label: 'Photorealistic', value: 'photorealistic' },
@@ -27,7 +26,7 @@ const imageStyles = [
 
 interface Data {
   text: string
-  imageStyle?: ImageOptions
+  imageStyle?: any
 }
 
 export const AiImageView = ({ editor, node, getPos, deleteNode }: NodeViewWrapperProps) => {
@@ -118,7 +117,7 @@ export const AiImageView = ({ editor, node, getPos, deleteNode }: NodeViewWrappe
   }, [])
 
   const createItemClickHandler = useCallback((style: { name: string; label: string; value: string }) => {
-    return () => setData(prevData => ({ ...prevData, imageStyle: style.value as ImageOptions }))
+    return () => setData(prevData => ({ ...prevData, imageStyle: style.value as any }))
   }, [])
 
   return (

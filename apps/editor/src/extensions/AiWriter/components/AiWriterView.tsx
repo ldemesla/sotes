@@ -1,21 +1,20 @@
+import * as Dropdown from '@radix-ui/react-dropdown-menu'
+
+import { AiStorage, tryParseToTiptapHTML } from '@/extensions/Ai/index'
+import { AiTone, AiToneOption } from '@/components/BlockEditor/types'
 import { NodeViewProps, NodeViewWrapper, useEditorState } from '@tiptap/react'
+import { Panel, PanelHeadline } from '@/components/ui/Panel'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import toast from 'react-hot-toast'
-import { v4 as uuid } from 'uuid'
 
 import { Button } from '@/components/ui/Button'
-import { Panel, PanelHeadline } from '@/components/ui/Panel'
-import { Textarea } from '@/components/ui/Textarea'
-import { Icon } from '@/components/ui/Icon'
-
-import { AiTone, AiToneOption } from '@/components/BlockEditor/types'
-import { tones } from '@/lib/constants'
-
-import * as Dropdown from '@radix-ui/react-dropdown-menu'
-import { Toolbar } from '@/components/ui/Toolbar'
-import { Surface } from '@/components/ui/Surface'
 import { DropdownButton } from '@/components/ui/Dropdown'
-import { AiStorage, tryParseToTiptapHTML } from '@/extensions/Ai/index'
+import { Icon } from '@/components/ui/Icon'
+import { Surface } from '@/components/ui/Surface'
+import { Textarea } from '@/components/ui/Textarea'
+import { Toolbar } from '@/components/ui/Toolbar'
+import toast from 'react-hot-toast'
+import { tones } from '@/lib/constants'
+import { v4 as uuid } from 'uuid'
 
 export interface DataProps {
   text: string
@@ -52,13 +51,13 @@ export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewProps
       return
     }
 
-    editor.commands.aiTextPrompt({
-      text: data.text,
-      insert: false,
-      tone: data.tone,
-      stream: true,
-      format: 'rich-text',
-    })
+    // editor.commands.aiTextPrompt({
+    //   text: data.text,
+    //   insert: false,
+    //   tone: data.tone,
+    //   stream: true,
+    //   format: 'rich-text',
+    // })
   }, [data.text, data.tone, editor])
 
   useEffect(() => {
@@ -70,7 +69,7 @@ export const AiWriterView = ({ editor, node, getPos, deleteNode }: NodeViewProps
   const insert = useCallback(() => {
     const from = getPos()
     const to = from + node.nodeSize
-    editor.chain().focus().aiAccept({ insertAt: { from, to }, append: false }).run()
+    // editor.chain().focus().aiAccept({ insertAt: { from, to }, append: false }).run()
   }, [editor, getPos, node.nodeSize])
 
   const discard = useCallback(() => {

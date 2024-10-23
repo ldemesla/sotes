@@ -1,18 +1,20 @@
-import { Icon } from '@/components/ui/Icon'
-import { Toolbar } from '@/components/ui/Toolbar'
-import { useTextmenuCommands } from './hooks/useTextmenuCommands'
-import { useTextmenuStates } from './hooks/useTextmenuStates'
-import { BubbleMenu, Editor } from '@tiptap/react'
-import { memo } from 'react'
 import * as Popover from '@radix-ui/react-popover'
-import { Surface } from '@/components/ui/Surface'
+
+import { BubbleMenu, Editor } from '@tiptap/react'
+
+import { AIDropdown } from './components/AIDropdown'
 import { ColorPicker } from '@/components/panels'
+import { ContentTypePicker } from './components/ContentTypePicker'
+import { EditLinkPopover } from './components/EditLinkPopover'
 import { FontFamilyPicker } from './components/FontFamilyPicker'
 import { FontSizePicker } from './components/FontSizePicker'
+import { Icon } from '@/components/ui/Icon'
+import { Surface } from '@/components/ui/Surface'
+import { Toolbar } from '@/components/ui/Toolbar'
+import { memo } from 'react'
+import { useTextmenuCommands } from './hooks/useTextmenuCommands'
 import { useTextmenuContentTypes } from './hooks/useTextmenuContentTypes'
-import { ContentTypePicker } from './components/ContentTypePicker'
-import { AIDropdown } from './components/AIDropdown'
-import { EditLinkPopover } from './components/EditLinkPopover'
+import { useTextmenuStates } from './hooks/useTextmenuStates'
 
 // We memorize the button so each button is not rerendered
 // on every editor state change
@@ -60,17 +62,6 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
       updateDelay={100}
     >
       <Toolbar.Wrapper>
-        <AIDropdown
-          onCompleteSentence={commands.onCompleteSentence}
-          onEmojify={commands.onEmojify}
-          onFixSpelling={commands.onFixSpelling}
-          onMakeLonger={commands.onMakeLonger}
-          onMakeShorter={commands.onMakeShorter}
-          onSimplify={commands.onSimplify}
-          onTldr={commands.onTldr}
-          onTone={commands.onTone}
-          onTranslate={commands.onTranslate}
-        />
         <Toolbar.Divider />
         <MemoContentTypePicker options={blockOptions} />
         <MemoFontFamilyPicker onChange={commands.onSetFont} value={states.currentFont || ''} />
