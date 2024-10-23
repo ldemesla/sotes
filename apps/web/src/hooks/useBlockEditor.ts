@@ -19,7 +19,7 @@ export const useBlockEditor = ({
 }) => {
   const editor = useEditor(
     {
-      immediatelyRender: true,
+      immediatelyRender: false,
       shouldRerenderOnTransaction: false,
       autofocus: true,
       onCreate: (ctx) => {
@@ -50,7 +50,7 @@ export const useBlockEditor = ({
     []
   );
 
-  window.editor = editor;
+  // window.editor = editor;
 
   return { editor };
 };

@@ -10,7 +10,7 @@ import { MicrophoneIcon } from "./icons/MicrophoneIcon";
 import { RealtimeClient } from "@openai/realtime-api-beta";
 import StopIcon from "./icons/StopIcon";
 import { cn } from "../lib/utils";
-import { useBlockEditor } from "~/hooks/useBlockEditor";
+import { instructions } from "~/lib/conversation-config";
 
 /**
  * Running a local relay server will allow you to hide your API key
@@ -128,8 +128,14 @@ export const VoiceRecorder = ({
 
     // Set instructions
     client.updateSession({
-      turn_detection: { type: "server_vad" },
-      //   instructions: instructions,
+      turn_detection: {
+        type: "server_vad",
+        threshold: 0.5,
+        prefix_padding_ms: 500,
+        silence_duration_ms: 1000,
+      },
+
+      instructions: instructions,
     });
 
     // Set transcription, otherwise we don't get user transcriptions back
