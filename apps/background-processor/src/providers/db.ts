@@ -1,5 +1,5 @@
 import { Kysely, PostgresDialect } from "kysely";
-import { DB, pg } from "shared";
+import { pg, DB } from "shared";
 
 const dialect = new PostgresDialect({
   pool: new pg.Pool({

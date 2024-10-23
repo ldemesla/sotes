@@ -1,10 +1,12 @@
-import dayjs from "dayjs";
+import { JSONContent } from "@tiptap/core";
 import {
   CreateDocumentInput,
   IDocumentRepository,
   ListDocumentsInput,
   UpdateDocumentInput,
 } from "./document.types";
+import { mainQueue } from "~/server/queues";
+import { redis } from "~/server/providers/redis";
 
 export class DocumentController {
   constructor(private readonly documentRepository: IDocumentRepository) {}
@@ -18,7 +20,18 @@ export class DocumentController {
   }
 
   async updateDocument(id: string, document: UpdateDocumentInput) {
-    return this.documentRepository.updateDocument(id, document);
+    const updatedDocument = await this.documentRepository.updateDocument(
+      id,
+      document
+    );
+
+    await mainQueue.add("processDocument", {
+      content: updatedDocument.content as JSONContent,
+      title: updatedDocument.title ?? "",
+      id: updatedDocument.id,
+    });
+
+    return updatedDocument;
   }
 
   async deleteDocument(id: string) {

@@ -5,10 +5,7 @@ import { Document as DocumentDB } from "~/server/db/database.types";
 export interface IDocumentRepository {
   createDocument(document: CreateDocumentInput): Promise<Document>;
   getDocument(id: string): Promise<Document | undefined>;
-  updateDocument(
-    id: string,
-    document: UpdateDocumentInput
-  ): Promise<Document | undefined>;
+  updateDocument(id: string, document: UpdateDocumentInput): Promise<Document>;
   deleteDocument(id: string): Promise<void>;
   listDocuments(input: ListDocumentsInput): Promise<Document[]>;
 }

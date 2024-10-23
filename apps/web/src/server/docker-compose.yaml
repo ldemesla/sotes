@@ -24,8 +24,41 @@ services:
     volumes:
       - test_db:/var/lib/postgresql/data
 
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333" # REST API
+      - "6334:6334" # GRPC API
+    volumes:
+      - qdrant_storage:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__GRPC_PORT=6334
+      - QDRANT__SERVICE__HTTP_PORT=6333
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli", "-u", "redis://127.0.0.1:6379", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/var/lib/redis/data
+
 volumes:
   db:
     driver: local
   test_db:
+    driver: local
+  redis:
+    driver: local
+  qdrant_storage:
     driver: local
