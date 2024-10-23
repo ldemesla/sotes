@@ -15,6 +15,18 @@ echo "OPENAI_API_KEY=<your-openai-api-key>" >> apps/relay-server/.env
 pnpm install
 ```
 
+### Start the database
+
+```bash
+pnpm db:start
+```
+
+### Run the migrations
+
+```bash
+pnpm db:migrate
+```
+
 ### Run the development server
 
 ```bash

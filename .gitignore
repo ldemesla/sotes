@@ -50,3 +50,5 @@ apps/*/.env
 .turbo
 
 node_modules/
+
+.npmrc
