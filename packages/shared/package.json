@@ -1,0 +1,32 @@
+{
+  "name": "shared",
+  "version": "0.2.0",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "dev": "tsup src/index.ts --format esm,cjs --dts --watch"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@types/pg": "^8.11.10",
+    "tsup": "^8.3.0"
+  },
+  "dependencies": {
+    "@tiptap/core": "2.8.0",
+    "dayjs": "^1.11.13",
+    "kysely": "^0.27.4",
+    "pg": "^8.13.0",
+    "postgres-array": "^3.0.2"
+  }
+}

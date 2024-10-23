@@ -38,7 +38,7 @@ export class DocumentRepository implements IDocumentRepository {
       })
       .where("id", "=", id)
       .returningAll()
-      .executeTakeFirst() as Promise<Document | undefined>;
+      .executeTakeFirst() as Promise<Document>;
   }
 
   async deleteDocument(id: string) {
