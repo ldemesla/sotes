@@ -2,11 +2,12 @@
 
 ## Setup the Tiptap registry
 
-Once you've cloned the repository, you'll need to setup a .npmrc file to authenticate with the Tiptap registry. This is
-necessary to access the Tiptap Pro extensions which are included in the package.json, if this step is skipped you will
-not be able to install dependencies.
+Once you've cloned the repository, you'll need to setup a `.npmrc` file to authenticate with the Tiptap registry. This
+is necessary to access the Tiptap Pro extensions which are included in the `package.json`, if this step is skipped you
+will not be able to install dependencies.
 
-You can create a free account, no credit card required, at Tiptap Cloud to get your token here.
+You can create a free account, no credit card required, at [Tiptap Cloud](https://cloud.tiptap.dev/register) to get your
+toke [here](https://cloud.tiptap.dev/pro-extensions).
 
 ```bash
 # Create a new .npmrc file in the root of the repo
