@@ -1,22 +1,21 @@
-import { EditorContent } from '@tiptap/react'
-import React, { useRef } from 'react'
-
-import { LinkMenu } from '@/components/menus'
-
-import { useBlockEditor } from '@/hooks/useBlockEditor'
-
 import '@/styles/index.css'
 
-import { Sidebar } from '@/components/Sidebar'
-import ImageBlockMenu from '@/extensions/ImageBlock/components/ImageBlockMenu'
-import { ColumnsMenu } from '@/extensions/MultiColumn/menus'
-import { TableColumnMenu, TableRowMenu } from '@/extensions/Table/menus'
-import { EditorHeader } from './components/EditorHeader'
-import { TextMenu } from '../menus/TextMenu'
-import { ContentItemMenu } from '../menus/ContentItemMenu'
-import { useSidebar } from '@/hooks/useSidebar'
 import * as Y from 'yjs'
+
+import React, { useRef } from 'react'
+import { TableColumnMenu, TableRowMenu } from '@/extensions/Table/menus'
+
+import { ColumnsMenu } from '@/extensions/MultiColumn/menus'
+import { ContentItemMenu } from '../menus/ContentItemMenu'
+import { EditorContent } from '@tiptap/react'
+import { EditorHeader } from './components/EditorHeader'
+import ImageBlockMenu from '@/extensions/ImageBlock/components/ImageBlockMenu'
+import { LinkMenu } from '@/components/menus'
+import { Sidebar } from '@/components/Sidebar'
+import { TextMenu } from '../menus/TextMenu'
 import { TiptapCollabProvider } from '@hocuspocus/provider'
+import { useBlockEditor } from '@/hooks/useBlockEditor'
+import { useSidebar } from '@/hooks/useSidebar'
 
 export const BlockEditor = ({
   aiToken,

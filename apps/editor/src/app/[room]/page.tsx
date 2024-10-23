@@ -1,28 +1,30 @@
 'use client'
 
-import { TiptapCollabProvider } from '@hocuspocus/provider'
 import 'iframe-resizer/js/iframeResizer.contentWindow'
-import { useSearchParams } from 'next/navigation'
+
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react'
-import { Doc as YDoc } from 'yjs'
 
 import { BlockEditor } from '@/components/BlockEditor'
-import { createPortal } from 'react-dom'
-import { Surface } from '@/components/ui/Surface'
-import { Toolbar } from '@/components/ui/Toolbar'
 import { Icon } from '@/components/ui/Icon'
+import { Surface } from '@/components/ui/Surface'
+import { TiptapCollabProvider } from '@hocuspocus/provider'
+import { Toolbar } from '@/components/ui/Toolbar'
+import { Doc as YDoc } from 'yjs'
+import { createPortal } from 'react-dom'
+import { useSearchParams } from 'next/navigation'
 
 const useDarkmode = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(
-    typeof window !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)').matches : false,
+    false,
+    // typeof window !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)').matches : false,
   )
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-    const handleChange = () => setIsDarkMode(mediaQuery.matches)
-    mediaQuery.addEventListener('change', handleChange)
-    return () => mediaQuery.removeEventListener('change', handleChange)
-  }, [])
+  // useEffect(() => {
+  //   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+  //   const handleChange = () => setIsDarkMode(mediaQuery.matches)
+  //   mediaQuery.addEventListener('change', handleChange)
+  //   return () => mediaQuery.removeEventListener('change', handleChange)
+  // }, [])
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', isDarkMode)
@@ -146,7 +148,6 @@ export default function Document({ params }: { params: { room: string } }) {
 
   return (
     <>
-      {DarkModeSwitcher}
       <BlockEditor aiToken={aiToken ?? undefined} hasCollab={hasCollab} ydoc={ydoc} provider={provider} />
     </>
   )
