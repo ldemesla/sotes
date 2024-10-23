@@ -51,4 +51,6 @@ apps/*/.env
 
 node_modules/
 
+apps/web/.next
+
 .npmrc
