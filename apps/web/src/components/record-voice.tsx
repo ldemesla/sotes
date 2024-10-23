@@ -6,8 +6,11 @@ import { WavRecorder, WavStreamPlayer } from "../lib/wavtools";
 
 import { Button } from "~/components/ui/button";
 import type { ItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
+import { MicrophoneIcon } from "./icons/MicrophoneIcon";
 import { RealtimeClient } from "@openai/realtime-api-beta";
+import StopIcon from "./icons/StopIcon";
 import { cn } from "../lib/utils";
+import { useBlockEditor } from "~/hooks/useBlockEditor";
 
 /**
  * Running a local relay server will allow you to hide your API key
@@ -21,7 +24,11 @@ import { cn } from "../lib/utils";
  */
 const LOCAL_RELAY_SERVER_URL: string = "ws://localhost:8081";
 
-export const VoiceRecorder = () => {
+export const VoiceRecorder = ({
+  addTranscriptToEditor,
+}: {
+  addTranscriptToEditor: (transcript: string) => void;
+}) => {
   /**
    * Ask user for API Key
    * If we're using the local relay server, we don't need this
@@ -155,6 +162,11 @@ export const VoiceRecorder = () => {
         item.formatted.file = wavFile;
       }
       setItems(items);
+
+      // Add user transcript to the editor
+      if (item.role === "user" && item.formatted.transcript) {
+        addTranscriptToEditor(item.formatted.transcript);
+      }
     });
 
     setItems(client.conversation.getItems());
@@ -163,7 +175,7 @@ export const VoiceRecorder = () => {
       // cleanup; resets to defaults
       client.reset();
     };
-  }, []);
+  }, [addTranscriptToEditor]);
 
   return (
     <div className='mb-4 flex flex-col items-center justify-between gap-4'>
@@ -183,11 +195,12 @@ export const VoiceRecorder = () => {
             </div>
           )
       )}
-
       <Button
         onClick={isConnected ? disconnectConversation : connectConversation}
+        variant='brand'
+        size='icon'
       >
-        {isConnected ? "disconnect" : "connect"}
+        {isConnected ? <StopIcon /> : <MicrophoneIcon />}
       </Button>
     </div>
   );

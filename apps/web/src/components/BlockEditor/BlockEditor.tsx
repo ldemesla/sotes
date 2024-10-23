@@ -2,9 +2,10 @@
 
 import "~/styles/index.css";
 
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 
 import { EditorContent } from "@tiptap/react";
+import { VoiceRecorder } from "../record-voice";
 import { useBlockEditor } from "~/hooks/useBlockEditor";
 
 export const BlockEditor = ({
@@ -19,17 +20,27 @@ export const BlockEditor = ({
     aiToken,
   });
 
-  console.log(editor);
+  const addTranscriptToEditor = useCallback(
+    (transcript: string) => {
+      if (editor) {
+        editor.commands.insertContent(transcript);
+      }
+    },
+    [editor]
+  );
 
   if (!editor) {
     return null;
   }
 
   return (
-    <div className='flex h-full' ref={menuContainerRef}>
-      <div className='relative flex flex-col flex-1 h-full overflow-hidden'>
-        <EditorContent editor={editor} className='flex-1 overflow-y-auto' />
-      </div>
+    <div className='flex flex-col gap-12 rounded bg-card px-4 py-4 relative flex-1 h-full overflow-hidden w-full'>
+      <EditorContent
+        editor={editor}
+        className='flex-1 overflow-y-auto w-full'
+      />
+
+      <VoiceRecorder addTranscriptToEditor={addTranscriptToEditor} />
     </div>
   );
 };

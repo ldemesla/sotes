@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react'
-import { useEditor, useEditorState } from '@tiptap/react'
+import { AiImage, AiWriter } from '@/extensions'
 import type { AnyExtension, Editor } from '@tiptap/core'
+import { TiptapCollabProvider, WebSocketStatus } from '@hocuspocus/provider'
+import { useEditor, useEditorState } from '@tiptap/react'
+import { useEffect, useState } from 'react'
+import { userColors, userNames } from '../lib/constants'
+
+import { Ai } from '@/extensions/Ai'
 import Collaboration from '@tiptap/extension-collaboration'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
-import { TiptapCollabProvider, WebSocketStatus } from '@hocuspocus/provider'
-import type { Doc as YDoc } from 'yjs'
-
-import { ExtensionKit } from '@/extensions/extension-kit'
-import { userColors, userNames } from '../lib/constants'
-import { randomElement } from '../lib/utils'
 import type { EditorUser } from '../components/BlockEditor/types'
+import { ExtensionKit } from '@/extensions/extension-kit'
+import type { Doc as YDoc } from 'yjs'
 import { initialContent } from '@/lib/data/initialContent'
-import { Ai } from '@/extensions/Ai'
-import { AiImage, AiWriter } from '@/extensions'
+import { randomElement } from '../lib/utils'
 
 declare global {
   interface Window {
