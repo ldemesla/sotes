@@ -6,7 +6,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
-    setupFiles: ["dotenv/config"],
+    setupFiles: ["dotenv/config", "./vitest.setup.ts"],
   },
   resolve: {
     alias: {

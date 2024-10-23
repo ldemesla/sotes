@@ -1,6 +1,8 @@
+import dayjs from "dayjs";
 import {
   CreateDocumentInput,
   IDocumentRepository,
+  ListDocumentsInput,
   UpdateDocumentInput,
 } from "./document.types";
 
@@ -21,5 +23,15 @@ export class DocumentController {
 
   async deleteDocument(id: string) {
     return this.documentRepository.deleteDocument(id);
+  }
+
+  async listDocuments(input: ListDocumentsInput) {
+    const documents = await this.documentRepository.listDocuments(input);
+    let nextPageToken: string | undefined;
+    if (documents.length === input.pageSize) {
+      const lastDocument = documents[documents.length - 1];
+      nextPageToken = `${lastDocument.created_at}_${lastDocument.id}`;
+    }
+    return { documents, nextPageToken };
   }
 }

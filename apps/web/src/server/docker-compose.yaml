@@ -12,6 +12,20 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
 
+  test_db:
+    image: postgres:14
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}_test
+    ports:
+      - "${TEST_DB_PORT}:5433"
+    volumes:
+      - test_db:/var/lib/postgresql/data
+
 volumes:
   db:
+    driver: local
+  test_db:
     driver: local
