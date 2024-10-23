@@ -1,16 +1,18 @@
 import type { JSONContent } from "@tiptap/core";
 import { Selectable } from "kysely";
-import { Document } from "~/server/db/database.types";
+import { Document as DocumentDB } from "~/server/db/database.types";
 
 export interface IDocumentRepository {
-  createDocument(document: CreateDocumentInput): Promise<Selectable<Document>>;
+  createDocument(document: CreateDocumentInput): Promise<Document>;
   getDocument(id: string): Promise<Document | undefined>;
   updateDocument(
     id: string,
     document: UpdateDocumentInput
   ): Promise<Document | undefined>;
   deleteDocument(id: string): Promise<void>;
+  listDocuments(input: ListDocumentsInput): Promise<Document[]>;
 }
+export type Document = Selectable<DocumentDB>;
 
 export type DocumentInput = {
   title: string;
@@ -20,3 +22,8 @@ export type DocumentInput = {
 export type CreateDocumentInput = DocumentInput;
 
 export type UpdateDocumentInput = DocumentInput;
+
+export type ListDocumentsInput = {
+  pageSize: number;
+  nextPageToken?: string;
+};

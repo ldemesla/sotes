@@ -2,10 +2,12 @@ import { db } from "~/server/providers/db";
 import type {
   CreateDocumentInput,
   IDocumentRepository,
+  ListDocumentsInput,
+  Document,
   UpdateDocumentInput,
 } from "./document.types";
-import { Document } from "~/server/db/database.types";
-import { Selectable } from "kysely";
+import dayjs from "dayjs";
+import { sql } from "kysely";
 
 export class DocumentRepository implements IDocumentRepository {
   async createDocument(document: CreateDocumentInput) {
@@ -16,7 +18,7 @@ export class DocumentRepository implements IDocumentRepository {
         content: JSON.stringify(document.content),
       })
       .returningAll()
-      .executeTakeFirst() as Promise<Selectable<Document>>;
+      .executeTakeFirst() as Promise<Document>;
   }
 
   async getDocument(id: string) {
@@ -41,5 +43,25 @@ export class DocumentRepository implements IDocumentRepository {
 
   async deleteDocument(id: string) {
     await db.deleteFrom("document").where("id", "=", id).execute();
+  }
+
+  async listDocuments(input: ListDocumentsInput) {
+    let builder = db
+      .selectFrom("document")
+      .orderBy(["created_at desc", "id desc"])
+      .limit(input.pageSize)
+      .selectAll();
+
+    if (input.nextPageToken) {
+      const cursorDate = input.nextPageToken?.split("_")[0];
+      const cursorId = input.nextPageToken?.split("_")[1];
+      builder = builder.where(
+        sql`(created_at, id)`,
+        "<",
+        sql`(${cursorDate}, ${cursorId})`
+      );
+    }
+
+    return builder.execute();
   }
 }
