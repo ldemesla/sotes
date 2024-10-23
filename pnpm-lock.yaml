@@ -324,6 +324,9 @@ importers:
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
+      debounce:
+        specifier: ^2.2.0
+        version: 2.2.0
       kysely:
         specifier: ^0.27.4
         version: 0.27.4
@@ -5463,6 +5466,11 @@ packages:
 
   /dayjs@1.11.13:
     resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
+    dev: false
+
+  /debounce@2.2.0:
+    resolution: {integrity: sha512-Xks6RUDLZFdz8LIdR6q0MTH44k7FikOmnh5xkSjMig6ch45afc8sjTjRQf3P6ax8dMgcQrYO/AR2RGWURrruqw==}
+    engines: {node: '>=18'}
     dev: false
 
   /debug@3.2.7:
