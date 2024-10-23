@@ -1,9 +1,13 @@
-import { DocumentRepository } from "./document.interface";
+import {
+  CreateDocumentInput,
+  IDocumentRepository,
+  UpdateDocumentInput,
+} from "./document.types";
 
 export class DocumentController {
-  constructor(private readonly documentRepository: DocumentRepository) {}
+  constructor(private readonly documentRepository: IDocumentRepository) {}
 
-  async createDocument(document: Document) {
+  async createDocument(document: CreateDocumentInput) {
     return this.documentRepository.createDocument(document);
   }
 
@@ -11,7 +15,7 @@ export class DocumentController {
     return this.documentRepository.getDocument(id);
   }
 
-  async updateDocument(id: string, document: Document) {
+  async updateDocument(id: string, document: UpdateDocumentInput) {
     return this.documentRepository.updateDocument(id, document);
   }
 

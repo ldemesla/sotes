@@ -12,11 +12,13 @@
     "dev": "concurrently \"db:start\" \"next dev --turbo\"",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "vitest"
   },
   "dependencies": {
     "@openai/realtime-api-beta": "github:openai/openai-realtime-api-beta",
     "@radix-ui/react-slot": "^1.1.0",
+    "@tiptap/core": "2.8.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "kysely": "^0.27.4",
@@ -32,13 +34,23 @@
     "@types/pg": "^8.11.10",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "^8.7.0",
+    "@typescript-eslint/parser": "^8.7.0",
     "concurrently": "^9.0.1",
-    "eslint": "^8",
+    "dotenv": "^16.4.5",
+    "eslint": "^8.57.1",
     "eslint-config-next": "15.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-turbo": "^2.1.2",
+    "eslint-plugin-jsx-a11y": "^6.10.1",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-tailwindcss": "^3.17.5",
     "kysely-codegen": "^0.17.0",
     "kysely-ctl": "^0.9.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^2.1.3"
   }
 }
