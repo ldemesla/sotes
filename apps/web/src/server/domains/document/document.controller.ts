@@ -66,22 +66,22 @@ export class DocumentController {
       // Query the vector database with the embedding
       const results = await qdrant.search("documents", {
         vector: embedding,
-        limit: 5,
-        score_threshold: 0.7,
       });
 
       // Extract the chunks from the results
       const chunks = results.map((result) => result.payload?.chunk);
 
-      console.log(chunks);
-
       // Query the LLM with the user query and the chunks
       const llmResponse = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-4",
         messages: [
-          { role: "system", content: "You are a helpful assistant." },
+          {
+            role: "system",
+            content:
+              "You are a helpful assistant. Here are the documents that are relevant to the user's query:",
+          },
+          { role: "system", content: chunks.join("\n") },
           { role: "user", content: input.query },
-          { role: "assistant", content: chunks.join("\n") },
         ],
       });
       return llmResponse.choices[0].message.content;

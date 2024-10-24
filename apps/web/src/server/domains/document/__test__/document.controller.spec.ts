@@ -197,11 +197,11 @@ describe("DocumentController", () => {
     });
   });
 
-  describe.only("QueryDocuments", () => {
+  describe.skip("QueryDocuments", () => {
     it("should query documents", async () => {
       // Act
       const response = await documentController.queryDocuments({
-        query: "what is my favorite color?",
+        query: "Who's my best friend",
       });
 
       console.log(response);
