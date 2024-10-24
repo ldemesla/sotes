@@ -15,11 +15,15 @@ export class JobHandlerController {
       case "PROCESS_DOCUMENT":
         return this.handleProcessDocument(job as ProcessDocumentJob);
     }
+
+    return;
   }
 
   async handleProcessDocument(job: ProcessDocumentJob) {
     // Chunk the document
     const chunks = await splitter.splitText(job.markdown);
+
+    console.log(chunks);
 
     // Create embeddings for each chunk
     const embeddings = await Promise.all(
@@ -31,6 +35,8 @@ export class JobHandlerController {
         return response.data[0].embedding;
       })
     );
+
+    console.log(embeddings);
 
     // Delete previous points for this document
     await qdrant.delete("documents", {
@@ -51,8 +57,11 @@ export class JobHandlerController {
         vector: embedding,
         payload: {
           documentId: job.id,
+          chunk: chunks[index],
         },
       })),
     });
+
+    console.log("done");
   }
 }

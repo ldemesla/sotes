@@ -1,13 +1,12 @@
 import "dotenv/config";
 import { Worker } from "bullmq";
-import { MAIN_QUEUE } from "shared";
+import { Job, MAIN_QUEUE } from "shared";
 import { redis } from "./providers/redis.js";
+import { jobHandlerController } from "./domains/jobHandler/index.js";
 
-const worker = new Worker(
+const worker = new Worker<Job>(
   MAIN_QUEUE,
-  async (job) => {
-    console.log(job.data);
-  },
+  async (args) => jobHandlerController.handleProcessDocument(args.data),
   {
     connection: redis,
   }

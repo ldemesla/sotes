@@ -25,3 +25,7 @@ export type ListDocumentsInput = {
   pageSize: number;
   nextPageToken?: string;
 };
+
+export type QueryDocumentsInput = {
+  query: string;
+};
