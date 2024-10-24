@@ -30,10 +30,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className='bg-layout text-layout-foreground flex h-screen gap-2 p-2'>
+        <main className='bg-layout text-layout-foreground flex h-screen gap-2 p-2'>
           <Sidebar />
           {children}
-        </div>
+        </main>
       </body>
     </html>
   );
