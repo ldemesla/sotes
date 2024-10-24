@@ -65,6 +65,15 @@ const config: Config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      boxShadow: {
+        section: "0px 0px 3px 0px rgba(0,0,0,0.25)",
+        item: "0px 0px 1px 0px rgba(0, 0, 0, 0.10) inset, 0px 0px 2px 0px rgba(0, 0, 0, 0.25), 0px 0px 9px 0px rgba(0, 0, 0, 0.20)",
+        "item-hover":
+          "0px 0px 1px 0px rgba(0, 0, 0, 0.10) inset, 0px 0px 2px 0px rgba(0, 0, 0, 0.30), 0px 0px 12px 0px rgba(0, 0, 0, 0.25)",
+      },
+      fontFamily: {
+        serif: ["New York", "serif"],
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

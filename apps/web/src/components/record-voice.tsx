@@ -2,14 +2,13 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { WavRecorder } from "../lib/wavtools";
 
 import { Button } from "~/components/ui/button";
 import type { ItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
 import { MicrophoneIcon } from "./icons/MicrophoneIcon";
 import { RealtimeClient } from "@openai/realtime-api-beta";
 import StopIcon from "./icons/StopIcon";
-import { cn } from "../lib/utils";
+import { WavRecorder } from "../lib/wavtools";
 import { instructions } from "~/lib/conversation-config";
 
 /**
@@ -65,7 +64,7 @@ export const VoiceRecorder = ({
    * All of our variables for displaying application state
    * - items are all conversation items (dialog)
    */
-  const [items, setItems] = useState<ItemType[]>([]);
+  const [, setItems] = useState<ItemType[]>([]);
 
   const [isConnected, setIsConnected] = useState(false);
 
@@ -157,8 +156,8 @@ export const VoiceRecorder = ({
   }, [addTranscriptToEditor]);
 
   return (
-    <div className="mb-4 flex flex-col items-center justify-between gap-4">
-      {items.map(
+    <div className='mb-4 flex flex-col items-center justify-between gap-4'>
+      {/* {items.map(
         (item) =>
           item.formatted.transcript && (
             <div
@@ -173,12 +172,12 @@ export const VoiceRecorder = ({
               {item.formatted.transcript}
             </div>
           )
-      )}
+      )} */}
       <Button
         onClick={isConnected ? disconnectConversation : connectConversation}
-        variant="brand"
-        size="icon"
-        className="fixed bottom-4 right-4"
+        variant='brand'
+        size='icon'
+        className='absolute bottom-4 right-4'
       >
         {isConnected ? <StopIcon /> : <MicrophoneIcon />}
       </Button>
