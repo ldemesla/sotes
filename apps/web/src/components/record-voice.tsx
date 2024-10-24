@@ -10,6 +10,7 @@ import { RealtimeClient } from "@openai/realtime-api-beta";
 import StopIcon from "./icons/StopIcon";
 import { WavRecorder } from "../lib/wavtools";
 import { instructions } from "~/lib/conversation-config";
+import { useContextState } from "~/context/ContextProvider";
 
 /**
  * Running a local relay server will allow you to hide your API key
@@ -23,12 +24,16 @@ import { instructions } from "~/lib/conversation-config";
  */
 const LOCAL_RELAY_SERVER_URL: string = "ws://localhost:8081";
 
+const DEBUG = false;
+
 export const VoiceRecorder = ({
   addTranscriptToEditor,
   previousTranscript,
+  updateDocumentTitle,
 }: {
-  addTranscriptToEditor: (transcript: string) => void;
   previousTranscript: string | null;
+  addTranscriptToEditor: (transcript: string) => void;
+  updateDocumentTitle: (title: string) => void;
 }) => {
   /**
    * Ask user for API Key
@@ -66,7 +71,8 @@ export const VoiceRecorder = ({
    * All of our variables for displaying application state
    * - items are all conversation items (dialog)
    */
-  const [, setItems] = useState<ItemType[]>([]);
+  const [items, setItems] = useState<ItemType[]>([]);
+  const { addContext } = useContextState();
 
   const [isConnected, setIsConnected] = useState(false);
 
@@ -125,12 +131,64 @@ export const VoiceRecorder = ({
         prefix_padding_ms: 500,
         silence_duration_ms: 1000,
       },
-
       instructions: instructions(previousTranscript ?? ""),
     });
 
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
+
+    client.addTool(
+      {
+        name: "add_title",
+        description:
+          "Adds a title to the conversation once the topic has become clear.",
+        parameters: {
+          type: "object",
+          properties: {
+            title: {
+              type: "string",
+              description:
+                "Suitable title for the conversation based on the topic. Keep it concise and use simple language.",
+            },
+          },
+          required: ["title"],
+        },
+      },
+      async ({ title }: { title: string }) => {
+        updateDocumentTitle(title);
+
+        return { ok: true };
+      }
+    );
+    client.addTool(
+      {
+        name: "add_context",
+        description: "Stores the conversation topic and relevant context.",
+        parameters: {
+          type: "object",
+          properties: {
+            key: {
+              type: "string",
+              description:
+                "The topic of the conversation. Always use lowercase and underscores, no other characters.",
+            },
+            value: {
+              type: "string",
+              description:
+                "Contextual information related to the conversation topic. For example, if the user is talking about a book, context might be about the author.",
+            },
+          },
+          required: ["key", "value"],
+        },
+      },
+      async ({ key, value }: { [key: string]: any }) => {
+        console.log("[add_context]", key, value);
+
+        addContext(value);
+
+        return { ok: true };
+      }
+    );
 
     client.on("error", (event: any) => console.error(event));
 
@@ -155,26 +213,60 @@ export const VoiceRecorder = ({
       // cleanup; resets to defaults
       client.reset();
     };
-  }, [addTranscriptToEditor]);
+  }, []);
 
   return (
     <div className='mb-4 flex flex-col items-center justify-between gap-4'>
-      {/* {items.map(
-        (item) =>
-          item.formatted.transcript && (
+      {items.map((conversationItem) => {
+        return (
+          DEBUG && (
             <div
-              key={item.id}
-              className={cn(
-                "flex gap-2 rounded bg-slate-100 p-4",
-                item.role === "user"
-                  ? "self-end"
-                  : "self-start bg-[#CC155E33] text-[#CC155E]"
-              )}
+              className='conversation-item flex gap-2 rounded bg-slate-100 p-4'
+              key={conversationItem.id}
             >
-              {item.formatted.transcript}
+              <div className={`speaker ${conversationItem.role || ""}`}>
+                <div>
+                  {(conversationItem.role || conversationItem.type).replaceAll(
+                    "_",
+                    " "
+                  )}
+                </div>
+              </div>
+              <div className={`speaker-content`}>
+                {/* tool response */}
+                {conversationItem.type === "function_call_output" && (
+                  <div>{conversationItem.formatted.output}</div>
+                )}
+                {/* tool call */}
+                {!!conversationItem.formatted.tool && (
+                  <div>
+                    tool:
+                    {conversationItem.formatted.tool.name}(
+                    {conversationItem.formatted.tool.arguments})
+                  </div>
+                )}
+                {!conversationItem.formatted.tool &&
+                  conversationItem.role === "user" && (
+                    <div>
+                      {conversationItem.formatted.transcript ||
+                        (conversationItem.formatted.audio?.length
+                          ? "(awaiting transcript)"
+                          : conversationItem.formatted.text || "(item sent)")}
+                    </div>
+                  )}
+                {!conversationItem.formatted.tool &&
+                  conversationItem.role === "assistant" && (
+                    <div>
+                      {conversationItem.formatted.transcript ||
+                        conversationItem.formatted.text ||
+                        "(truncated)"}
+                    </div>
+                  )}
+              </div>
             </div>
           )
-      )} */}
+        );
+      })}
       <Button
         onClick={isConnected ? disconnectConversation : connectConversation}
         variant='brand'
