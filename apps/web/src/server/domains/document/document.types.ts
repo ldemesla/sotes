@@ -1,6 +1,6 @@
 import type { JSONContent } from "@tiptap/core";
 import { Selectable } from "kysely";
-import { Document as DocumentDB } from "~/server/db/database.types";
+import { Document as DocumentDB } from "shared";
 
 export interface IDocumentRepository {
   createDocument(document: CreateDocumentInput): Promise<Document>;
