@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { WavRecorder, WavStreamPlayer } from "../lib/wavtools";
+import { WavRecorder } from "../lib/wavtools";
 
 import { Button } from "~/components/ui/button";
 import type { ItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
@@ -45,14 +45,10 @@ export const VoiceRecorder = ({
   /**
    * Instantiate:
    * - WavRecorder (speech input)
-   * - WavStreamPlayer (speech output)
    * - RealtimeClient (API client)
    */
   const wavRecorderRef = useRef<WavRecorder>(
     new WavRecorder({ sampleRate: 24000 })
-  );
-  const wavStreamPlayerRef = useRef<WavStreamPlayer>(
-    new WavStreamPlayer({ sampleRate: 24000 })
   );
   const clientRef = useRef<RealtimeClient>(
     new RealtimeClient(
@@ -75,12 +71,11 @@ export const VoiceRecorder = ({
 
   /**
    * Connect to conversation:
-   * WavRecorder taks speech input, WavStreamPlayer output, client is API client
+   * WavRecorder taks speech input, client is API client
    */
   const connectConversation = useCallback(async () => {
     const client = clientRef.current;
     const wavRecorder = wavRecorderRef.current;
-    const wavStreamPlayer = wavStreamPlayerRef.current;
 
     // Set state variables
     setIsConnected(true);
@@ -89,9 +84,6 @@ export const VoiceRecorder = ({
 
     // Connect to microphone
     await wavRecorder.begin();
-
-    // Connect to audio output
-    await wavStreamPlayer.connect();
 
     // Connect to realtime API
     await client.connect();
@@ -113,9 +105,6 @@ export const VoiceRecorder = ({
 
     const wavRecorder = wavRecorderRef.current;
     await wavRecorder.end();
-
-    const wavStreamPlayer = wavStreamPlayerRef.current;
-    wavStreamPlayer.interrupt();
   }, []);
 
   /**
@@ -124,7 +113,6 @@ export const VoiceRecorder = ({
    */
   useEffect(() => {
     // Get refs
-    const wavStreamPlayer = wavStreamPlayerRef.current;
     const client = clientRef.current;
 
     // Set instructions
@@ -144,13 +132,7 @@ export const VoiceRecorder = ({
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
 
     client.on("error", (event: any) => console.error(event));
-    client.on("conversation.interrupted", async () => {
-      const trackSampleOffset = wavStreamPlayer.interrupt();
-      if (trackSampleOffset?.trackId) {
-        const { trackId, offset } = trackSampleOffset;
-        client.cancelResponse(trackId, offset);
-      }
-    });
+
     client.on("conversation.item.appended", async ({ item, delta }: any) => {
       console.log("[conversation.item.appended]", item, delta);
     });
@@ -158,17 +140,6 @@ export const VoiceRecorder = ({
       const items = client.conversation.getItems();
       console.log("[conversation.updated]", item, delta);
 
-      if (delta?.audio) {
-        wavStreamPlayer.add16BitPCM(delta.audio, item.id);
-      }
-      if (item.status === "completed" && item.formatted.audio?.length) {
-        const wavFile = await WavRecorder.decode(
-          item.formatted.audio,
-          24000,
-          24000
-        );
-        item.formatted.file = wavFile;
-      }
       setItems(items);
 
       // Add user transcript to the editor
@@ -186,7 +157,7 @@ export const VoiceRecorder = ({
   }, [addTranscriptToEditor]);
 
   return (
-    <div className='mb-4 flex flex-col items-center justify-between gap-4'>
+    <div className="mb-4 flex flex-col items-center justify-between gap-4">
       {items.map(
         (item) =>
           item.formatted.transcript && (
@@ -205,9 +176,9 @@ export const VoiceRecorder = ({
       )}
       <Button
         onClick={isConnected ? disconnectConversation : connectConversation}
-        variant='brand'
-        size='icon'
-        className='fixed bottom-4 right-4'
+        variant="brand"
+        size="icon"
+        className="fixed bottom-4 right-4"
       >
         {isConnected ? <StopIcon /> : <MicrophoneIcon />}
       </Button>
