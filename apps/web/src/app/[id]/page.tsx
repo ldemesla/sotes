@@ -16,6 +16,7 @@ const getDocument = async (id: string): Promise<Document> => {
       type: "doc",
       content: [],
     },
+    markdown: "",
   });
   return newDocument;
 };
