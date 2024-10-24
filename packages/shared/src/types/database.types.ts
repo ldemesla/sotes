@@ -32,6 +32,14 @@ export interface Document {
   updated_at: Generated<Timestamp | null>;
 }
 
+export interface SotesPost {
+  created_at: Generated<Timestamp>;
+  id: Generated<number>;
+  name: string | null;
+  updated_at: Timestamp | null;
+}
+
 export interface DB {
   document: Document;
+  sotes_post: SotesPost;
 }

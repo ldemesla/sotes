@@ -26,7 +26,7 @@ export const Sidebar = () => {
       </Link>
 
       <Link href='/'>
-        <Button variant='ghost' className='justify-start'>
+        <Button variant='ghost' className='w-full justify-start'>
           Home
         </Button>
       </Link>

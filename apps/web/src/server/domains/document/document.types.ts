@@ -1,6 +1,6 @@
+import { Document as DocumentDB } from "shared";
 import type { JSONContent } from "@tiptap/core";
 import { Selectable } from "kysely";
-import { Document as DocumentDB } from "shared";
 
 export interface IDocumentRepository {
   createDocument(document: CreateDocumentInput): Promise<Document>;
@@ -19,7 +19,7 @@ export type DocumentInput = {
 
 export type CreateDocumentInput = DocumentInput;
 
-export type UpdateDocumentInput = DocumentInput;
+export type UpdateDocumentInput = Partial<DocumentInput>;
 
 export type ListDocumentsInput = {
   pageSize: number;
