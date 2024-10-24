@@ -30,8 +30,8 @@ const config: Config = {
           foreground: "var(--brand-foreground)",
         },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "hsla(var(--primary), 0.05)",
+          foreground: "hsla(var(--primary-foreground), 0.92)",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",

@@ -1,5 +1,5 @@
 import { Document } from "~/server/domains/document/document.types";
-import Link from "next/link";
+import { DocumentCard } from "~/components/document-card";
 import { documentController } from "~/server/domains/document";
 
 const getDocuments = async (): Promise<Document[]> => {
@@ -14,18 +14,25 @@ export default async function Home() {
   const documents = await getDocuments();
 
   return (
-    <div>
-      <div className=''>
-        <p className=''>Recent</p>
+    <div className='bg-card relative flex h-full flex-1 flex-col gap-6 overflow-hidden rounded-lg p-6 shadow-md'>
+      <div className='mb-4'>
+        <h1 className='text-2xl font-bold'>Hello, Fredrika</h1>
+        <p className='text-muted-foreground text-lg'>What’s on your mind?</p>
+      </div>
+
+      <div className='mb-4'>
+        <input
+          type='text'
+          placeholder='How can I help you today?'
+          className='border-input w-full rounded-lg border p-3 text-sm shadow-sm'
+        />
+      </div>
+
+      <div>
+        <p className='text-lg font-semibold'>Recent</p>
         <div className='grid grid-cols-3 gap-4'>
           {documents.map((document) => (
-            <Link
-              key={document.id}
-              className='rounded bg-white p-4'
-              href={`/${document.id}`}
-            >
-              {document.title}
-            </Link>
+            <DocumentCard document={document} key={document.id} />
           ))}
         </div>
       </div>
