@@ -103,6 +103,7 @@ export const VoiceRecorder = ({
 
   /**
    * Disconnect and reset conversation state
+   * TODO: send last recording before disconnecting the client
    */
   const disconnectConversation = useCallback(async () => {
     setIsConnected(false);
@@ -130,6 +131,7 @@ export const VoiceRecorder = ({
     client.updateSession({
       turn_detection: {
         type: "server_vad",
+        // TODO: play around more with these values
         threshold: 0.5,
         prefix_padding_ms: 500,
         silence_duration_ms: 1000,
