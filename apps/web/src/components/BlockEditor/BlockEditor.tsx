@@ -2,12 +2,12 @@
 
 import "~/styles/index.css";
 
-import React, { useCallback, useEffect, useRef } from "react";
-
 import { Content, EditorContent } from "@tiptap/react";
+import React, { useCallback, useEffect } from "react";
+
+import { Document } from "~/server/domains/document/document.types";
 import { VoiceRecorder } from "../record-voice";
 import { useBlockEditor } from "~/hooks/useBlockEditor";
-import { Document } from "~/server/domains/document/document.types";
 
 export const BlockEditor = ({
   aiToken,
@@ -17,8 +17,6 @@ export const BlockEditor = ({
   hasCollab?: boolean;
   document: Document;
 }) => {
-  const menuContainerRef = useRef(null);
-
   const { editor } = useBlockEditor({
     aiToken,
     document,
@@ -44,10 +42,10 @@ export const BlockEditor = ({
   }
 
   return (
-    <div className="flex flex-col gap-12 rounded bg-card px-4 py-4 relative flex-1 h-full overflow-hidden w-full">
+    <div className='bg-card relative flex size-full flex-1 flex-col gap-12 overflow-hidden rounded-lg p-4 shadow-[0px_0px_3px_0px_rgba(0,0,0,0.25)]'>
       <EditorContent
         editor={editor}
-        className="flex-1 overflow-y-auto w-full"
+        className='w-full flex-1 overflow-y-auto'
       />
 
       <VoiceRecorder addTranscriptToEditor={addTranscriptToEditor} />

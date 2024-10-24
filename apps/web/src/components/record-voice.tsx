@@ -207,6 +207,7 @@ export const VoiceRecorder = ({
         onClick={isConnected ? disconnectConversation : connectConversation}
         variant='brand'
         size='icon'
+        className='fixed bottom-4 right-4'
       >
         {isConnected ? <StopIcon /> : <MicrophoneIcon />}
       </Button>
