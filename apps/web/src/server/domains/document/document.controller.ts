@@ -6,7 +6,6 @@ import {
   UpdateDocumentInput,
 } from "./document.types";
 import { mainQueue } from "~/server/queues";
-import { redis } from "~/server/providers/redis";
 
 export class DocumentController {
   constructor(private readonly documentRepository: IDocumentRepository) {}
@@ -29,6 +28,8 @@ export class DocumentController {
       content: updatedDocument.content as JSONContent,
       title: updatedDocument.title ?? "",
       id: updatedDocument.id,
+      type: "PROCESS_DOCUMENT",
+      markdown: updatedDocument.markdown ?? "",
     });
 
     return updatedDocument;

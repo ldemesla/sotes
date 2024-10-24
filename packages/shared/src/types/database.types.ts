@@ -27,6 +27,7 @@ export interface Document {
   content: Json | null;
   created_at: Generated<Timestamp | null>;
   id: Generated<string>;
+  markdown: string | null;
   title: string | null;
   updated_at: Generated<Timestamp | null>;
 }

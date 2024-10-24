@@ -35,6 +35,7 @@ export class DocumentRepository implements IDocumentRepository {
       .set({
         title: document.title,
         content: JSON.stringify(document.content),
+        markdown: document.markdown,
       })
       .where("id", "=", id)
       .returningAll()
