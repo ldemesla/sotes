@@ -1,4 +1,4 @@
-import { qdrant } from "~/server/providers/vectorDb";
+import { qdrant } from "~/server/providers/qdrant";
 
 const createCollections = async () => {
   await qdrant.createCollection("documents", {
