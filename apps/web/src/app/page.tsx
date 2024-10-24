@@ -16,8 +16,8 @@ export default async function Home() {
   return (
     <div className='bg-card relative flex h-full flex-1 flex-col gap-6 overflow-hidden rounded-lg p-6 shadow-md'>
       <div className='mb-4'>
-        <h1 className='text-2xl font-bold'>Hello, Fredrika</h1>
-        <p className='text-muted-foreground text-lg'>What’s on your mind?</p>
+        <h1 className='text-2xl font-bold font-serif'>Hello, Fredrika</h1>
+        <p className='text-muted-foreground text-2xl font-serif'>What’s on your mind?</p>
       </div>
 
       <div className='mb-4'>

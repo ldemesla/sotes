@@ -1,10 +1,10 @@
-import type { Editor } from "@tiptap/core";
-import ExtensionKit from "~/extensions/extension-kit";
-import { useEditor } from "@tiptap/react";
-import debounce from "debounce";
-import type { EditorEvents } from "@tiptap/core";
-import { updateDocument } from "~/server/domains/document/document.actions";
 import { Document } from "~/server/domains/document/document.types";
+import type { Editor } from "@tiptap/core";
+import type { EditorEvents } from "@tiptap/core";
+import ExtensionKit from "~/extensions/extension-kit";
+import debounce from "debounce";
+import { updateDocument } from "~/server/domains/document/document.actions";
+import { useEditor } from "@tiptap/react";
 declare global {
   interface Window {
     editor: Editor | null;
@@ -26,7 +26,6 @@ export const useBlockEditor = ({
     console.log("debouncedUpdate", event);
     updateDocument(document.id, {
       content: event.editor.getJSON(),
-      title: document.title!,
       markdown: event.editor.storage.markdown.getMarkdown(),
     });
   };
