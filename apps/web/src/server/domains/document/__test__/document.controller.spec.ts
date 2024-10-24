@@ -20,6 +20,7 @@ describe("DocumentController", () => {
       const document = await documentController.createDocument({
         title,
         content,
+        markdown: "",
       });
 
       // Assert
@@ -36,6 +37,7 @@ describe("DocumentController", () => {
       const document = await documentController.createDocument({
         title,
         content,
+        markdown: "",
       });
 
       // Act
@@ -62,6 +64,7 @@ describe("DocumentController", () => {
       const document = await documentController.createDocument({
         title,
         content,
+        markdown: "",
       });
 
       // Act
@@ -70,6 +73,7 @@ describe("DocumentController", () => {
         {
           title: updatedTitle,
           content: updatedContent,
+          markdown: "",
         }
       );
 
@@ -86,6 +90,7 @@ describe("DocumentController", () => {
       const document = await documentController.createDocument({
         title,
         content,
+        markdown: "",
       });
 
       // Act
@@ -189,6 +194,20 @@ describe("DocumentController", () => {
           true
         );
       }
+    });
+  });
+
+  describe.only("QueryDocuments", () => {
+    it("should query documents", async () => {
+      // Act
+      const response = await documentController.queryDocuments({
+        query: "what is my favorite color?",
+      });
+
+      console.log(response);
+
+      // Assert
+      expect(response).toBeDefined();
     });
   });
 });
