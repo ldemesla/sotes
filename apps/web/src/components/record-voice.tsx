@@ -25,8 +25,10 @@ const LOCAL_RELAY_SERVER_URL: string = "ws://localhost:8081";
 
 export const VoiceRecorder = ({
   addTranscriptToEditor,
+  previousTranscript,
 }: {
   addTranscriptToEditor: (transcript: string) => void;
+  previousTranscript: string | null;
 }) => {
   /**
    * Ask user for API Key
@@ -124,7 +126,7 @@ export const VoiceRecorder = ({
         silence_duration_ms: 1000,
       },
 
-      instructions: instructions,
+      instructions: instructions(previousTranscript ?? ""),
     });
 
     // Set transcription, otherwise we don't get user transcriptions back

@@ -67,13 +67,13 @@ export const BlockEditor = ({
   }
 
   return (
-    <div className='bg-card shadow-section relative flex size-full flex-1 flex-col gap-12 overflow-hidden rounded-lg p-8'>
-      <div className='mx-auto flex w-full max-w-2xl flex-col gap-4 overflow-y-auto'>
-        <p className='text-muted-foreground text-center text-sm'>
+    <div className="bg-card relative flex size-full flex-1 flex-col gap-12 overflow-hidden rounded-lg p-8 shadow-[0px_0px_3px_0px_rgba(0,0,0,0.25)]">
+      <div className="mx-auto flex w-full max-w-2xl flex-col gap-4 overflow-y-auto">
+        <p className="text-muted-foreground text-center">
           {formatDate(document.updated_at)}
         </p>
         <input
-          className='w-full border-none bg-transparent text-lg font-semibold focus:outline-none'
+          className="w-full border-none bg-transparent text-xl focus:outline-none"
           defaultValue={document.title ?? ""}
           onBlur={(e) => {
             updateDocument(document.id, {
@@ -81,9 +81,12 @@ export const BlockEditor = ({
             });
           }}
         />
-        <EditorContent editor={editor} className='w-full flex-1' />
+        <EditorContent editor={editor} className="w-full flex-1" />
 
-        <VoiceRecorder addTranscriptToEditor={addTranscriptToEditor} />
+        <VoiceRecorder
+          addTranscriptToEditor={addTranscriptToEditor}
+          previousTranscript={document.markdown}
+        />
       </div>
     </div>
   );
