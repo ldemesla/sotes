@@ -6,7 +6,7 @@
     "db:start": "docker-compose --env-file .env -f ./src/server/docker-compose.yaml up -d",
     "db:migrate:make": "pnpm kysely migrate:make",
     "db:migrate:up": "pnpm kysely migrate:up && pnpm db:typegen",
-    "db:migrate": "pnpm kysely migrate:latest && pnpm db:typegen",
+    "db:migrate": "tsx ./src/scripts/create-qdrant-collections.ts && pnpm kysely migrate:latest && pnpm db:typegen",
     "db:migrate:down": "pnpm kysely migrate:down",
     "db:typegen": "pnpm kysely-codegen --out-file ./../../packages/shared/src/types/database.types.ts",
     "dev": "tsx ./src/scripts/check-env.ts && concurrently \"pnpm db:start\" \"next dev --turbo\"",
@@ -38,9 +38,10 @@
     "react": "19.0.0-rc-65a56d0e-20241020",
     "react-dom": "19.0.0-rc-65a56d0e-20241020",
     "shared": "*",
-    "utils": "*",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
+    "tiptap-markdown": "^0.8.10",
+    "utils": "*",
     "zod": "^3.23.8"
   },
   "devDependencies": {

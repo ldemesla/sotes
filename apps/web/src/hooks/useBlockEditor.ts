@@ -27,6 +27,7 @@ export const useBlockEditor = ({
     updateDocument(document.id, {
       content: event.editor.getJSON(),
       title: document.title!,
+      markdown: event.editor.storage.markdown.getMarkdown(),
     });
   };
 
@@ -35,6 +36,7 @@ export const useBlockEditor = ({
       immediatelyRender: false,
       shouldRerenderOnTransaction: false,
       autofocus: true,
+
       onUpdate: debounce(debouncedUpdate, 200),
       onCreate: (ctx) => {
         // if (provider && !provider.isSynced) {

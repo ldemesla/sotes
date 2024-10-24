@@ -1,9 +1,17 @@
 import type { JSONContent } from "@tiptap/core";
 
-export interface ProcessDocument {
-  content: JSONContent;
-  title: string;
-  id: string;
+interface BaseJob {
+  type: "PROCESS_DOCUMENT";
 }
 
-export type Job = ProcessDocument;
+export interface ProcessDocumentJob extends BaseJob {
+  content: JSONContent;
+  markdown: string;
+  title: string;
+  id: string;
+  type: "PROCESS_DOCUMENT";
+}
+
+export type Job = ProcessDocumentJob;
+
+export type TipTapDocument = JSONContent;

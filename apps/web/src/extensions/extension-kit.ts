@@ -1,6 +1,7 @@
 "use client";
 
 import StarterKit from "@tiptap/starter-kit";
+import { Markdown } from "tiptap-markdown";
 
 export const ExtensionKit = () => [
   StarterKit.configure({
@@ -13,6 +14,7 @@ export const ExtensionKit = () => [
       keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
     },
   }),
+  Markdown,
 ];
 
 export default ExtensionKit;

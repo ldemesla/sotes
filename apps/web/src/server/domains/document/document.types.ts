@@ -14,6 +14,7 @@ export type Document = Selectable<DocumentDB>;
 export type DocumentInput = {
   title: string;
   content: JSONContent;
+  markdown: string;
 };
 
 export type CreateDocumentInput = DocumentInput;
