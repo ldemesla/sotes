@@ -12,7 +12,10 @@ const getDocument = async (id: string): Promise<Document> => {
 
   const newDocument = await documentController.createDocument({
     title: "Untitled",
-    content: [],
+    content: {
+      type: "doc",
+      content: [],
+    },
   });
   return newDocument;
 };
