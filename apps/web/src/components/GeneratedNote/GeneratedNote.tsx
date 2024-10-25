@@ -6,12 +6,19 @@ import { Content, EditorContent, JSONContent } from "@tiptap/react";
 import React, { useEffect, useState } from "react";
 
 import { Document } from "~/server/domains/document/document.types";
-import { listDocuments, updateGeneratedNote } from "~/server/domains/document/document.actions";
+import {
+  addQuotesToGeneratedNote,
+  listDocuments,
+  updateGeneratedNote,
+} from "~/server/domains/document/document.actions";
 import { useBlockEditor } from "~/hooks/useBlockEditor";
 import { DocumentCard } from "../document-card";
+import { useContextState } from "~/context/ContextProvider";
 
 export const GeneratedNote = ({ aiToken, document }: { aiToken?: string; hasCollab?: boolean; document: Document }) => {
   const [sources, setSources] = useState<Document[]>([]);
+
+  const { addContext } = useContextState();
 
   const { editor } = useBlockEditor({
     aiToken,
@@ -48,7 +55,8 @@ export const GeneratedNote = ({ aiToken, document }: { aiToken?: string; hasColl
     const lastSegment = pathSegments[pathSegments.length - 1];
 
     if (lastSegment === "new") {
-      window.history.replaceState(null, "", `/gen/${document.id}`);
+      const newUrl = `/gen/${document.id}`;
+      window.history.pushState({ path: newUrl }, "", newUrl);
     }
   }, [document.id]);
 

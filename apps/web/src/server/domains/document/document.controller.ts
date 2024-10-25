@@ -137,7 +137,7 @@ When the user asks a question about a specific topic, follow these steps:
 
 {
   "response": "Your well-written and clear response in HTML format",
-  "title": "A title for the generated document"
+  "title": "A title for the generated document",
 }
 
 Important: The "response" field should be formatted in HTML, suitable for use in a React-powered TipTap text editor. Use appropriate HTML tags to structure your response, such as <p> for paragraphs, <ul> and <li> for lists, and so on. For headings only use <h4>, <h5> and <h6> tags.
@@ -147,7 +147,7 @@ Example of the desired output structure (content is purely illustrative):
 
 {
   "response": "<h1>[Main Topic]</h1><p>[Engaging introduction to the topic, incorporating key ideas from the notes]</p><h2>Key Insights</h2><p>[Detailed exploration of the main points, weaving together information from the notes in a coherent narrative]</p><h2>Connections and Patterns</h2><p>[Discussion of how different ideas relate to each other, highlighting any interesting correlations discovered in the notes]</p><h2>Evolving Perspectives</h2><p>[If applicable, a section discussing how thoughts or opinions on the topic have changed over time, as reflected in the notes]</p><h2>Implications and Future Considerations</h2><p>[Exploration of potential consequences or future directions related to the topic, based on the insights from the notes]</p><h2>Personal Reflections</h2><p>[A section that captures the emotional tone or personal stance on the topic, as expressed in the notes]</p>",
-  "title": "[Main Topic]: Insights and Reflections"
+  "title": "[Main Topic]: Insights and Reflections",
 }
 
 Remember, the content of your response should be based solely on the information found in the user's notes. If there isn't enough information to answer the question, your response should reflect that.
@@ -172,5 +172,31 @@ Now, please analyze the user's notes and answer their question.
     } catch (e) {
       console.error(e);
     }
+  }
+
+  async addQuotesToGeneratedNote(note: string) {
+    const llmResponse = await openai.chat.completions.create({
+      model: "gpt-4o-2024-08-06",
+      response_format: { type: "json_object" },
+      messages: [
+        { role: "user", content: note },
+        {
+          role: "system",
+          content: `
+            You are a marketing expert. Given a text, you will find the most relevant and engaging quotes related to the topic. You should return at most 3 quotes, and should never return a quote from an unknown author.
+
+            Format your output as a JSON object with the following structure:
+
+            {
+              "quotes": ["<quote 1> - <author>", "<quote 2> - <author>", "<quote 3> - <author>"]
+            }
+          `,
+        },
+      ],
+    });
+
+    const parsedAnswer: { quotes: string[] } = JSON.parse(llmResponse.choices[0].message.content ?? "");
+
+    return parsedAnswer.quotes;
   }
 }

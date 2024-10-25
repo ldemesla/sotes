@@ -31,12 +31,14 @@ export default async function GenPage({
     document = await documentController.getGeneratedNote(id);
   }
 
+  const quotes = await documentController.addQuotesToGeneratedNote(document.markdown ?? "");
+
   if (!document) return null;
 
   return (
     <ContextProvider>
       <GeneratedNote document={document} />
-      <ContextBar />
+      <ContextBar contextToAdd={quotes} />
     </ContextProvider>
   );
 }

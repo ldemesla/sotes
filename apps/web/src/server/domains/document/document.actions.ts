@@ -30,3 +30,7 @@ export const listDocuments = async (input: ListDocumentsInput) => {
 export const listGeneratedNotes = async (input: ListDocumentsInput) => {
   return documentController.listGeneratedNotes(input);
 };
+
+export const addQuotesToGeneratedNote = async (note: string) => {
+  return documentController.addQuotesToGeneratedNote(note);
+};
