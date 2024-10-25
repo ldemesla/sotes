@@ -27,6 +27,12 @@ export class DocumentRepository implements IDocumentRepository {
     >;
   }
 
+  async getGeneratedNote(id: string) {
+    return db.selectFrom("generated_note").where("id", "=", id).selectAll().executeTakeFirst() as Promise<
+      Document | undefined
+    >;
+  }
+
   async updateDocument(id: string, document: UpdateDocumentInput) {
     return db
       .updateTable("document")
@@ -50,6 +56,48 @@ export class DocumentRepository implements IDocumentRepository {
     if (input.filters?.ids) {
       builder = builder.where("id", "in", input.filters.ids);
     }
+
+    if (input.nextPageToken) {
+      const cursorDate = input.nextPageToken?.split("_")[0];
+      const cursorId = input.nextPageToken?.split("_")[1];
+      builder = builder.where(sql`(created_at, id)`, "<", sql`(${cursorDate}, ${cursorId})`);
+    }
+
+    return builder.execute();
+  }
+
+  async createGeneratedNote(document: CreateDocumentInput) {
+    return db
+      .insertInto("generated_note")
+      .values({
+        title: document.title,
+        content: JSON.stringify(document.content),
+        markdown: document.markdown,
+        sources: document.sources ?? [],
+      })
+      .returningAll()
+      .executeTakeFirst() as Promise<Document>;
+  }
+
+  async updateGeneratedNote(id: string, document: UpdateDocumentInput) {
+    return db
+      .updateTable("generated_note")
+      .set({
+        title: document.title,
+        content: JSON.stringify(document.content),
+        markdown: document.markdown,
+      })
+      .where("id", "=", id)
+      .returningAll()
+      .executeTakeFirst() as Promise<Document>;
+  }
+
+  async listGeneratedNotes(input: ListDocumentsInput) {
+    let builder = db
+      .selectFrom("generated_note")
+      .orderBy(["created_at desc", "id desc"])
+      .limit(input.pageSize)
+      .selectAll();
 
     if (input.nextPageToken) {
       const cursorDate = input.nextPageToken?.split("_")[0];

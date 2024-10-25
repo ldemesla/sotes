@@ -68,14 +68,11 @@ describe("DocumentController", () => {
       });
 
       // Act
-      const updatedDocument = await documentController.updateDocument(
-        document.id,
-        {
-          title: updatedTitle,
-          content: updatedContent,
-          markdown: "",
-        }
-      );
+      const updatedDocument = await documentController.updateDocument(document.id, {
+        title: updatedTitle,
+        content: updatedContent,
+        markdown: "",
+      });
 
       // Assert
       expect(updatedDocument).toBeDefined();
@@ -190,9 +187,7 @@ describe("DocumentController", () => {
       expect(firstPage.nextPageToken).toBeUndefined();
       // Check that the id of each record is above the one of the next record
       for (let i = 0; i < firstPage.documents.length - 1; i++) {
-        expect(firstPage.documents[i].id > firstPage.documents[i + 1].id).toBe(
-          true
-        );
+        expect(firstPage.documents[i].id > firstPage.documents[i + 1].id).toBe(true);
       }
     });
   });
@@ -203,8 +198,6 @@ describe("DocumentController", () => {
       const response = await documentController.queryDocuments({
         query: "Who's my best friend",
       });
-
-      console.log(response);
 
       // Assert
       expect(response).toBeDefined();

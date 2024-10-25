@@ -1,4 +1,4 @@
-import { Document } from "~/server/domains/document/document.types";
+import { Document, UpdateDocumentInput } from "~/server/domains/document/document.types";
 import type { Editor } from "@tiptap/core";
 import type { EditorEvents } from "@tiptap/core";
 import ExtensionKit from "~/extensions/extension-kit";
@@ -16,14 +16,16 @@ export const useBlockEditor = ({
   userId,
   userName = "Maxi",
   document,
+  update,
 }: {
   aiToken?: string;
   userId?: string;
   userName?: string;
   document: Document;
+  update: (id: string, document: UpdateDocumentInput) => void;
 }) => {
   const debouncedUpdate = (event: EditorEvents["update"]) => {
-    updateDocument(document.id, {
+    update(document.id, {
       content: JSON.parse(JSON.stringify(event.editor.getJSON())),
       markdown: event.editor.storage.markdown.getMarkdown(),
     });

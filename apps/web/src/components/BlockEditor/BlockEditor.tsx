@@ -41,6 +41,7 @@ export const BlockEditor = ({ aiToken, document }: { aiToken?: string; hasCollab
   const { editor } = useBlockEditor({
     aiToken,
     document,
+    update: updateDocument,
   });
 
   useEffect(() => {

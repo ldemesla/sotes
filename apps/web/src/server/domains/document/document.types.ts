@@ -8,6 +8,10 @@ export interface IDocumentRepository {
   updateDocument(id: string, document: UpdateDocumentInput): Promise<Document>;
   deleteDocument(id: string): Promise<void>;
   listDocuments(input: ListDocumentsInput): Promise<Document[]>;
+  listGeneratedNotes(input: ListDocumentsInput): Promise<Document[]>;
+  createGeneratedNote(note: CreateDocumentInput): Promise<Document>;
+  updateGeneratedNote(id: string, document: UpdateDocumentInput): Promise<Document>;
+  getGeneratedNote(id: string): Promise<Document | undefined>;
 }
 export type Document = Selectable<DocumentDB>;
 
@@ -15,6 +19,7 @@ export type DocumentInput = {
   title: string;
   content: JSONContent;
   markdown: string;
+  sources?: string[];
 };
 
 export type CreateDocumentInput = DocumentInput;
