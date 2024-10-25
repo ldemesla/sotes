@@ -30,10 +30,12 @@ export const VoiceRecorder = ({
   addTranscriptToEditor,
   previousTranscript,
   updateDocumentTitle,
+  improveTranscript,
 }: {
   previousTranscript: string | null;
   addTranscriptToEditor: (transcript: string) => void;
   updateDocumentTitle: (title: string) => void;
+  improveTranscript: () => void;
 }) => {
   /**
    * Ask user for API Key
@@ -41,9 +43,7 @@ export const VoiceRecorder = ({
    */
   const apiKey = LOCAL_RELAY_SERVER_URL
     ? ""
-    : (localStorage.getItem("tmp::voice_api_key") ??
-      prompt("OpenAI API Key") ??
-      "");
+    : (localStorage.getItem("tmp::voice_api_key") ?? prompt("OpenAI API Key") ?? "");
   if (apiKey !== "") {
     localStorage.setItem("tmp::voice_api_key", apiKey);
   }
@@ -53,9 +53,7 @@ export const VoiceRecorder = ({
    * - WavRecorder (speech input)
    * - RealtimeClient (API client)
    */
-  const wavRecorderRef = useRef<WavRecorder>(
-    new WavRecorder({ sampleRate: 24000 })
-  );
+  const wavRecorderRef = useRef<WavRecorder>(new WavRecorder({ sampleRate: 24000 }));
   const clientRef = useRef<RealtimeClient>(
     new RealtimeClient(
       LOCAL_RELAY_SERVER_URL
@@ -63,8 +61,8 @@ export const VoiceRecorder = ({
         : {
             apiKey: apiKey,
             dangerouslyAllowAPIKeyInBrowser: true,
-          }
-    )
+          },
+    ),
   );
 
   /**
@@ -96,7 +94,7 @@ export const VoiceRecorder = ({
     await client.connect();
 
     if (client.getTurnDetectionType() === "server_vad") {
-      await wavRecorder.record((data) => client.appendInputAudio(data.mono));
+      await wavRecorder.record(data => client.appendInputAudio(data.mono));
     }
   }, []);
 
@@ -112,7 +110,9 @@ export const VoiceRecorder = ({
 
     const wavRecorder = wavRecorderRef.current;
     await wavRecorder.end();
-  }, []);
+
+    improveTranscript();
+  }, [improveTranscript]);
 
   /**
    * Core RealtimeClient and audio capture setup
@@ -140,8 +140,7 @@ export const VoiceRecorder = ({
     client.addTool(
       {
         name: "add_title",
-        description:
-          "Adds a title to the conversation once the topic has become clear.",
+        description: "Adds a title to the conversation once the topic has become clear.",
         parameters: {
           type: "object",
           properties: {
@@ -158,7 +157,7 @@ export const VoiceRecorder = ({
         updateDocumentTitle(title);
 
         return { ok: true };
-      }
+      },
     );
     client.addTool(
       {
@@ -169,8 +168,7 @@ export const VoiceRecorder = ({
           properties: {
             key: {
               type: "string",
-              description:
-                "The topic of the conversation. Always use lowercase and underscores, no other characters.",
+              description: "The topic of the conversation. Always use lowercase and underscores, no other characters.",
             },
             value: {
               type: "string",
@@ -187,7 +185,7 @@ export const VoiceRecorder = ({
         addContext(value);
 
         return { ok: true };
-      }
+      },
     );
 
     client.on("error", (event: any) => console.error(event));
@@ -216,52 +214,35 @@ export const VoiceRecorder = ({
   }, []);
 
   return (
-    <div className='mb-4 flex flex-col items-center justify-between gap-4'>
-      {items.map((conversationItem) => {
+    <div className="mb-4 flex flex-col items-center justify-between gap-4">
+      {items.map(conversationItem => {
         return (
           DEBUG && (
-            <div
-              className='conversation-item flex gap-2 rounded bg-slate-100 p-4'
-              key={conversationItem.id}
-            >
+            <div className="conversation-item flex gap-2 rounded bg-slate-100 p-4" key={conversationItem.id}>
               <div className={`speaker ${conversationItem.role || ""}`}>
-                <div>
-                  {(conversationItem.role || conversationItem.type).replaceAll(
-                    "_",
-                    " "
-                  )}
-                </div>
+                <div>{(conversationItem.role || conversationItem.type).replaceAll("_", " ")}</div>
               </div>
               <div className={`speaker-content`}>
                 {/* tool response */}
-                {conversationItem.type === "function_call_output" && (
-                  <div>{conversationItem.formatted.output}</div>
-                )}
+                {conversationItem.type === "function_call_output" && <div>{conversationItem.formatted.output}</div>}
                 {/* tool call */}
                 {!!conversationItem.formatted.tool && (
                   <div>
                     tool:
-                    {conversationItem.formatted.tool.name}(
-                    {conversationItem.formatted.tool.arguments})
+                    {conversationItem.formatted.tool.name}({conversationItem.formatted.tool.arguments})
                   </div>
                 )}
-                {!conversationItem.formatted.tool &&
-                  conversationItem.role === "user" && (
-                    <div>
-                      {conversationItem.formatted.transcript ||
-                        (conversationItem.formatted.audio?.length
-                          ? "(awaiting transcript)"
-                          : conversationItem.formatted.text || "(item sent)")}
-                    </div>
-                  )}
-                {!conversationItem.formatted.tool &&
-                  conversationItem.role === "assistant" && (
-                    <div>
-                      {conversationItem.formatted.transcript ||
-                        conversationItem.formatted.text ||
-                        "(truncated)"}
-                    </div>
-                  )}
+                {!conversationItem.formatted.tool && conversationItem.role === "user" && (
+                  <div>
+                    {conversationItem.formatted.transcript ||
+                      (conversationItem.formatted.audio?.length
+                        ? "(awaiting transcript)"
+                        : conversationItem.formatted.text || "(item sent)")}
+                  </div>
+                )}
+                {!conversationItem.formatted.tool && conversationItem.role === "assistant" && (
+                  <div>{conversationItem.formatted.transcript || conversationItem.formatted.text || "(truncated)"}</div>
+                )}
               </div>
             </div>
           )
@@ -269,9 +250,9 @@ export const VoiceRecorder = ({
       })}
       <Button
         onClick={isConnected ? disconnectConversation : connectConversation}
-        variant='brand'
-        size='icon'
-        className='absolute bottom-4 right-4'
+        variant="brand"
+        size="icon"
+        className="absolute bottom-4 right-4"
       >
         {isConnected ? <StopIcon /> : <MicrophoneIcon />}
       </Button>
