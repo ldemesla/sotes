@@ -62,9 +62,9 @@ const config: Config = {
       },
       boxShadow: {
         section: "0px 0px 3px 0px rgba(0,0,0,0.25)",
-        item: "0px 0px 1px 0px rgba(0, 0, 0, 0.10) inset, 0px 0px 2px 0px rgba(0, 0, 0, 0.25), 0px 0px 9px 0px rgba(0, 0, 0, 0.20)",
+        item: "0px 0.5px 2.5px 0px rgba(0, 0, 0, 0.30)",
         "item-hover":
-          "0px 0px 1px 0px rgba(0, 0, 0, 0.10) inset, 0px 0px 2px 0px rgba(0, 0, 0, 0.30), 0px 0px 12px 0px rgba(0, 0, 0, 0.25)",
+          "0px 0px 1px 0px rgba(0, 0, 0, 0.40), 0px 0px 1.5px 0px rgba(0, 0, 0, 0.30), 0px 7px 22px 0px rgba(0, 0, 0, 0.25)",
         window: "0px 36px 100px 0px rgba(0, 0, 0, 0.40), 0px 0px 3px 0px rgba(0, 0, 0, 0.25)",
       },
       fontFamily: {
