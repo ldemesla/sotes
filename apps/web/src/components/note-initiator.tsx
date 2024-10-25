@@ -1,16 +1,16 @@
 "use client";
 
-import { createDocument } from "~/server/domains/document/document.actions";
+import { createGeneratedNote } from "~/server/domains/document/document.actions";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 
 export const NoteInitiator = () => {
   const [inputValue, setInputValue] = useState("");
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyPress = async (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
-      redirect(`/gen?query=${encodeURIComponent(inputValue)}`);
+      redirect(`/gen/new?query=${encodeURIComponent(inputValue)}`);
     }
   };
 

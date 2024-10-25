@@ -28,18 +28,22 @@ export interface Document {
   created_at: Generated<Timestamp | null>;
   id: Generated<string>;
   markdown: string | null;
+  sources: string[] | null;
   title: string | null;
   updated_at: Generated<Timestamp | null>;
 }
 
-export interface SotesPost {
-  created_at: Generated<Timestamp>;
-  id: Generated<number>;
-  name: string | null;
-  updated_at: Timestamp | null;
+export interface GeneratedNote {
+  content: Json | null;
+  created_at: Generated<Timestamp | null>;
+  id: Generated<string>;
+  markdown: string | null;
+  sources: string[] | null;
+  title: string | null;
+  updated_at: Generated<Timestamp | null>;
 }
 
 export interface DB {
   document: Document;
-  sotes_post: SotesPost;
+  generated_note: GeneratedNote;
 }
