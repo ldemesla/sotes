@@ -35,14 +35,7 @@ const formatDate = (date: Date | null) => {
   }
 };
 
-export const BlockEditor = ({
-  aiToken,
-  document,
-}: {
-  aiToken?: string;
-  hasCollab?: boolean;
-  document: Document;
-}) => {
+export const BlockEditor = ({ aiToken, document }: { aiToken?: string; hasCollab?: boolean; document: Document }) => {
   const [title, setTitle] = useState(document.title);
 
   const { editor } = useBlockEditor({
@@ -62,40 +55,63 @@ export const BlockEditor = ({
         editor.commands.insertContent(transcript);
       }
     },
-    [editor]
+    [editor],
   );
+
+  const improveTranscript = useCallback(() => {
+    const improveTranscript = async (content: string) => {
+      const response = await fetch("/api/improve-transcript", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("No AI token provided, please set TIPTAP_AI_SECRET in your environment");
+      }
+      const improvedTranscript = await response.json();
+
+      editor?.commands.setContent(improvedTranscript);
+    };
+
+    if (editor) {
+      const editorContent = editor.getText();
+      improveTranscript(editorContent);
+      // Update the editor content with the improved transcript
+    }
+  }, [editor]);
 
   if (!editor) {
     return null;
   }
 
   return (
-    <div className='bg-card relative flex size-full flex-1 flex-col gap-12 overflow-hidden rounded-lg p-8 shadow-[0px_0px_3px_0px_rgba(0,0,0,0.25)]'>
-      <div className='mx-auto flex w-full max-w-2xl flex-col gap-4 overflow-y-auto'>
-        <p className='text-muted-foreground text-center'>
-          {formatDate(document.updated_at)}
-        </p>
+    <div className="bg-card relative flex size-full flex-1 flex-col gap-12 overflow-hidden rounded-lg p-8 shadow-[0px_0px_3px_0px_rgba(0,0,0,0.25)]">
+      <div className="mx-auto flex w-full max-w-2xl flex-col gap-4 overflow-y-auto">
+        <p className="text-muted-foreground text-center">{formatDate(document.updated_at)}</p>
         <input
-          className={cn(
-            "w-full border-none bg-transparent text-lg font-semibold focus:outline-none",
-            {
-              hidden: title === "Untitled",
-            }
-          )}
+          className={cn("w-full border-none bg-transparent text-lg font-semibold focus:outline-none", {
+            hidden: title === "Untitled",
+          })}
           value={title ?? ""}
-          onChange={(e) => {
+          onChange={e => {
             setTitle(e.target.value);
           }}
-          onBlur={(e) => {
+          onBlur={e => {
             updateDocument(document.id, {
               title: e.target.value,
             });
           }}
         />
-        <EditorContent editor={editor} className='w-full flex-1' />
+        <EditorContent editor={editor} className="w-full flex-1" />
 
         <VoiceRecorder
           addTranscriptToEditor={addTranscriptToEditor}
+          improveTranscript={improveTranscript}
           previousTranscript={document.markdown}
           updateDocumentTitle={(title: string) => {
             if (title === "Untitled") {
