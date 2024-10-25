@@ -25,7 +25,7 @@ const getDocument = async (id: string): Promise<Document> => {
   return newDocument;
 };
 
-export default async function Home({ params }: { params: { id: string } }) {
+export default async function Home({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   const document = await getDocument(id);
