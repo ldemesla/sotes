@@ -24,9 +24,7 @@ export const useBlockEditor = ({
 }) => {
   const debouncedUpdate = (event: EditorEvents["update"]) => {
     updateDocument(document.id, {
-      content: JSON.parse(
-        JSON.stringify(event.editor?.state.doc.content.toJSON())
-      ),
+      content: JSON.parse(JSON.stringify(event.editor.getJSON())),
       markdown: event.editor.storage.markdown.getMarkdown(),
     });
   };
@@ -38,7 +36,7 @@ export const useBlockEditor = ({
       autofocus: true,
 
       onUpdate: debounce(debouncedUpdate, 200),
-      onCreate: (ctx) => {
+      onCreate: ctx => {
         // if (provider && !provider.isSynced) {
         //   provider.on("synced", () => {
         //     setTimeout(() => {
@@ -63,7 +61,7 @@ export const useBlockEditor = ({
         },
       },
     },
-    []
+    [],
   );
 
   // window.editor = editor;
