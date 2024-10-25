@@ -37,7 +37,7 @@
   h4,
   h5,
   h6 {
-    @apply font-bold first:mt-0 last:mb-0;
+    @apply font-semibold first:mt-0 last:mb-0;
   }
 
   h1,
@@ -64,7 +64,7 @@
     @apply h-auto w-full max-w-full;
   }
 
-  [data-type='horizontalRule'] {
+  [data-type="horizontalRule"] {
     @apply my-8 py-4 transition-all duration-100 ease-in-out cursor-pointer;
 
     &.ProseMirror-selectednode {

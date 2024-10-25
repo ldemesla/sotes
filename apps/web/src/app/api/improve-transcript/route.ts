@@ -42,11 +42,11 @@ export async function POST(request: Request) {
         {
           role: "system",
           content:
-            "You are an expert editor and writer, skilled at improving transcripts and structuring content in JSON format.",
+            "You are an expert editor and writer, skilled at improving transcripts and structuring content in JSON format.", // TODO: style of writing of Paul Graham
         },
         {
           role: "user",
-          content: `Improve the following transcript according to these guidelines:
+          content: `Rewrite the transcript into written text according to these guidelines:
 1. Remove filler words (um, uh, like, you know, etc.)
 2. Improve the overall writing quality
 3. Use simple and concise language
@@ -57,8 +57,7 @@ export async function POST(request: Request) {
 Here's the transcript to improve:
 
 ${content}
-
-Provide the improved version in a structured JSON format that matches the JSONContent type.`,
+`,
         },
       ],
       response_format: zodResponseFormat(ContentSchema, "content"),

@@ -16,7 +16,7 @@
 
   .selection,
   *::selection {
-    @apply bg-black/10 dark:bg-white/20 inline;
+    @apply bg-[hsla(19,88%,66%,0.4)] dark:bg-white/20 inline;
   }
 
   & > .react-renderer {

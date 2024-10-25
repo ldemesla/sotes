@@ -2,24 +2,19 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   darkMode: ["class"],
-  content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
-  ],
+  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
         background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        foreground: "hsla(var(--foreground), 0.92)",
         layout: {
           DEFAULT: "hsl(var(--layout))",
-          foreground: "hsla(var(--layout-foreground))",
+          foreground: "hsl(var(--layout-foreground))",
         },
         card: {
           DEFAULT: "hsl(var(--card))",
-          foreground: "hsla(var(--card-foreground))",
+          foreground: "hsla(var(--card-foreground), 0.92)",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -70,9 +65,11 @@ const config: Config = {
         item: "0px 0px 1px 0px rgba(0, 0, 0, 0.10) inset, 0px 0px 2px 0px rgba(0, 0, 0, 0.25), 0px 0px 9px 0px rgba(0, 0, 0, 0.20)",
         "item-hover":
           "0px 0px 1px 0px rgba(0, 0, 0, 0.10) inset, 0px 0px 2px 0px rgba(0, 0, 0, 0.30), 0px 0px 12px 0px rgba(0, 0, 0, 0.25)",
+        window: "0px 36px 100px 0px rgba(0, 0, 0, 0.40), 0px 0px 3px 0px rgba(0, 0, 0, 0.25)",
       },
       fontFamily: {
-        serif: ["New York", "serif"],
+        serif: ["New York Extra Large", "serif"],
+        sans: ["SF Pro Text", "Geist", "sans-serif"],
       },
     },
   },
