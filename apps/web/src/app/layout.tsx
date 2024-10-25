@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} flex h-screen overflow-hidden p-4 antialiased`}>
-        <main className="bg-[url('/noise.svg')] bg-[length:250px_250px] bg-repeat bg-blend-multiply text-layout-foreground shadow-window flex flex-1 gap-2 rounded-2xl border border-white/20 bg-white/30 p-2 ring ring-black/10 backdrop-blur-3xl">
+        <main className="text-layout-foreground shadow-window flex flex-1 gap-2 rounded-2xl border border-white/20 bg-white/30 bg-[url('/noise.svg')] bg-[length:250px_250px] bg-repeat p-2 bg-blend-multiply ring ring-black/10 backdrop-blur-3xl">
           <Sidebar />
           {children}
         </main>
