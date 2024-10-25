@@ -22,11 +22,9 @@ export class DocumentRepository implements IDocumentRepository {
   }
 
   async getDocument(id: string) {
-    return db
-      .selectFrom("document")
-      .where("id", "=", id)
-      .selectAll()
-      .executeTakeFirst() as Promise<Document | undefined>;
+    return db.selectFrom("document").where("id", "=", id).selectAll().executeTakeFirst() as Promise<
+      Document | undefined
+    >;
   }
 
   async updateDocument(id: string, document: UpdateDocumentInput) {
@@ -47,20 +45,16 @@ export class DocumentRepository implements IDocumentRepository {
   }
 
   async listDocuments(input: ListDocumentsInput) {
-    let builder = db
-      .selectFrom("document")
-      .orderBy(["created_at desc", "id desc"])
-      .limit(input.pageSize)
-      .selectAll();
+    let builder = db.selectFrom("document").orderBy(["created_at desc", "id desc"]).limit(input.pageSize).selectAll();
+
+    if (input.filters?.ids) {
+      builder = builder.where("id", "in", input.filters.ids);
+    }
 
     if (input.nextPageToken) {
       const cursorDate = input.nextPageToken?.split("_")[0];
       const cursorId = input.nextPageToken?.split("_")[1];
-      builder = builder.where(
-        sql`(created_at, id)`,
-        "<",
-        sql`(${cursorDate}, ${cursorId})`
-      );
+      builder = builder.where(sql`(created_at, id)`, "<", sql`(${cursorDate}, ${cursorId})`);
     }
 
     return builder.execute();
