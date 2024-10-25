@@ -157,28 +157,24 @@ export const VoiceRecorder = ({
     client.addTool(
       {
         name: "add_context",
-        description: "Stores the conversation topic and relevant context.",
+        description:
+          "When touching on new topics, add context to enrich the conversation with fascinating facts, research findings, and expert insights related to the current topic. Examples: For microplastics - latest research debunking common myths, for books - author background and transformative ideas, for psychology - practical applications and assessment methods.",
         parameters: {
           type: "object",
           properties: {
-            key: {
-              type: "string",
-              description: "The topic of the conversation. Always use lowercase and underscores, no other characters.",
-            },
             value: {
               type: "string",
               description:
-                "Contextual information related to the conversation topic. For example, if the user is talking about a book, context might be about the author.",
+                "High-value contextual information that deepens understanding of the topic, such as: recent research findings that challenge common beliefs, expert insights from primary sources, practical applications or examples, historical context that shapes current understanding, statistical data from reputable sources, or methodological insights that explain how we know what we know. For books, include author credentials, key concepts, and real-world impact. For scientific topics, include latest research findings and methodology improvements. For psychological concepts, include assessment methods and practical applications.",
             },
           },
-          required: ["key", "value"],
+          required: ["value"],
         },
       },
-      async ({ key, value }: { [key: string]: any }) => {
-        console.log("[add_context]", key, value);
+      async ({ value }: { [key: string]: any }) => {
+        console.log("[add_context]", value);
 
         addContext(value);
-
         return { ok: true };
       },
     );
