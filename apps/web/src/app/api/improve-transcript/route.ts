@@ -7,25 +7,28 @@ const openai = new OpenAI({
 });
 
 const ContentSchema = z.object({
-  type: z.literal("doc"),
-  content: z.array(
-    z.object({
-      type: z.union([z.literal("heading"), z.literal("paragraph")]),
-      attrs: z
-        .object({
-          level: z.union([z.literal(2), z.literal(3)]),
-        })
-        .optional(),
-      content: z
-        .array(
-          z.object({
-            type: z.literal("text"),
-            text: z.string(),
-          }),
-        )
-        .optional(),
-    }),
-  ),
+  jsonContent: z.object({
+    type: z.literal("doc"),
+    content: z.array(
+      z.object({
+        type: z.union([z.literal("heading"), z.literal("paragraph")]),
+        attrs: z
+          .object({
+            level: z.union([z.literal(2), z.literal(3)]),
+          })
+          .optional(),
+        content: z
+          .array(
+            z.object({
+              type: z.literal("text"),
+              text: z.string(),
+            }),
+          )
+          .optional(),
+      }),
+    ),
+  }),
+  documentHeadline: z.string(),
 });
 
 export async function POST(request: Request) {
@@ -42,15 +45,18 @@ export async function POST(request: Request) {
         {
           role: "system",
           content:
-            "You are an expert editor and writer, skilled at improving transcripts and structuring content in JSON format.", // TODO: style of writing of Paul Graham
+            "Act as Paul Graham. You are an expert in writing essays that are concise and direct. You use simple language and only include content that builds your point. No fluff. You're tasked with reworking a rough transcript into a polished essay.",
         },
         {
           role: "user",
-          content: `Rewrite the transcript into written text according to these guidelines:
+          content: `
+Add a documentHeading summarizing the main topics of the document. Keep it short and concise. Simple and direct.
+          
+Rewrite the transcript into written text according to these guidelines:
 1. Remove filler words (um, uh, like, you know, etc.)
 2. Improve the overall writing quality
 3. Use simple and concise language
-4. Add appropriate headlines to structure the content
+4. Add appropriate headlines to structure the content if the subject completely changes. Don't put headlines before the first paragraph. 
 5. Add minor context where necessary, such as full names or brief explanations
 6. Maintain the original meaning and key points of the content
 
@@ -64,6 +70,8 @@ ${content}
     });
 
     const improvedContent = completion.choices[0].message.parsed;
+
+    console.log(improvedContent);
 
     return NextResponse.json(improvedContent);
   } catch (error) {

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -29,7 +30,6 @@ const DEBUG = false;
 export const VoiceRecorder = ({
   addTranscriptToEditor,
   previousTranscript,
-  updateDocumentTitle,
   improveTranscript,
 }: {
   previousTranscript: string | null;
@@ -74,6 +74,9 @@ export const VoiceRecorder = ({
 
   const [isConnected, setIsConnected] = useState(false);
 
+  // Add this line to create an audio element reference
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
   /**
    * Connect to conversation:
    * WavRecorder taks speech input, client is API client
@@ -89,6 +92,12 @@ export const VoiceRecorder = ({
 
     // Connect to microphone
     await wavRecorder.begin();
+
+    // Play the sound when recording starts
+    if (audioRef.current) {
+      audioRef.current.src = "/rising-pops.mp3";
+      audioRef.current.play();
+    }
 
     // Connect to realtime API
     await client.connect();
@@ -110,6 +119,12 @@ export const VoiceRecorder = ({
 
     const wavRecorder = wavRecorderRef.current;
     await wavRecorder.end();
+
+    // Play the sound when recording ends
+    if (audioRef.current) {
+      audioRef.current.src = "/disable-sound.mp3";
+      audioRef.current.play();
+    }
 
     improveTranscript();
   }, [improveTranscript]);
@@ -137,28 +152,6 @@ export const VoiceRecorder = ({
     // Set transcription, otherwise we don't get user transcriptions back
     client.updateSession({ input_audio_transcription: { model: "whisper-1" } });
 
-    client.addTool(
-      {
-        name: "add_title",
-        description: "Adds a title to the conversation once the topic has become clear.",
-        parameters: {
-          type: "object",
-          properties: {
-            title: {
-              type: "string",
-              description:
-                "Suitable title for the conversation based on the topic. Keep it concise and use simple language.",
-            },
-          },
-          required: ["title"],
-        },
-      },
-      async ({ title }: { title: string }) => {
-        updateDocumentTitle(title);
-
-        return { ok: true };
-      },
-    );
     client.addTool(
       {
         name: "add_context",
@@ -215,6 +208,7 @@ export const VoiceRecorder = ({
 
   return (
     <div className="mb-4 flex flex-col items-center justify-between gap-4">
+      <audio ref={audioRef} src="/rising-pops.mp3" />
       {items.map(conversationItem => {
         return (
           DEBUG && (
@@ -250,9 +244,9 @@ export const VoiceRecorder = ({
       })}
       <Button
         onClick={isConnected ? disconnectConversation : connectConversation}
-        variant="brand"
+        variant={isConnected ? "default" : "brand"}
         size="icon"
-        className="absolute bottom-4 right-4"
+        className={`absolute right-4 top-4 ${isConnected ? "animate-pulse" : ""}`}
       >
         {isConnected ? <StopIcon /> : <MicrophoneIcon />}
       </Button>
