@@ -23,6 +23,9 @@ export type UpdateDocumentInput = Partial<DocumentInput>;
 
 export type ListDocumentsInput = {
   pageSize: number;
+  filters?: {
+    ids?: string[];
+  };
   nextPageToken?: string;
 };
 

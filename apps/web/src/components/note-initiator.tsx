@@ -7,30 +7,10 @@ import { redirect } from "next/navigation";
 export const NoteInitiator = () => {
   const [inputValue, setInputValue] = useState("");
 
-  const handleSubmit = async (content: string) => {
-    const res = await createDocument({
-      title: "New Note",
-      content: {
-        type: "doc",
-        content: [
-          {
-            type: "paragraph",
-            content: [{ text: content, type: "text" }],
-          },
-        ],
-      },
-      markdown: content,
-    });
-
-    if (res) {
-      redirect(`/${res.id}`);
-    }
-  };
-
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
-      handleSubmit(inputValue);
+      redirect(`/gen?query=${encodeURIComponent(inputValue)}`);
     }
   };
 

@@ -23,9 +23,10 @@ export const useBlockEditor = ({
   document: Document;
 }) => {
   const debouncedUpdate = (event: EditorEvents["update"]) => {
-    console.log("debouncedUpdate", event);
     updateDocument(document.id, {
-      content: event.editor.getJSON(),
+      content: JSON.parse(
+        JSON.stringify(event.editor?.state.doc.content.toJSON())
+      ),
       markdown: event.editor.storage.markdown.getMarkdown(),
     });
   };

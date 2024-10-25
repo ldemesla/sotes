@@ -53,6 +53,10 @@ export class DocumentRepository implements IDocumentRepository {
       .limit(input.pageSize)
       .selectAll();
 
+    if (input.filters?.ids) {
+      builder = builder.where("id", "in", input.filters.ids);
+    }
+
     if (input.nextPageToken) {
       const cursorDate = input.nextPageToken?.split("_")[0];
       const cursorId = input.nextPageToken?.split("_")[1];
