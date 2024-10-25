@@ -165,7 +165,7 @@ export const VoiceRecorder = ({
             value: {
               type: "string",
               description:
-                "High-value contextual information that deepens understanding of the topic, such as: recent research findings that challenge common beliefs, expert insights from primary sources, practical applications or examples, historical context that shapes current understanding, statistical data from reputable sources, or methodological insights that explain how we know what we know. For books, include author credentials, key concepts, and real-world impact. For scientific topics, include latest research findings and methodology improvements. For psychological concepts, include assessment methods and practical applications.",
+                "High-value contextual information that deepens understanding of the topic, such as: recent research findings that challenge common beliefs, expert insights from primary sources, practical applications or examples, historical context that shapes current understanding, statistical data from reputable sources, or methodological insights that explain how we know what we know. For books, include author credentials, key concepts, and real-world impact. For scientific topics, include latest research findings and methodology improvements. Be very concise and only include information you're sure the user won't already know.",
             },
           },
           required: ["value"],
