@@ -33,7 +33,7 @@ export default async function Home() {
 
       <NoteInitiator />
 
-      <div className="">
+      <div className="w-full">
         <p className="text-md mb-2 font-semibold">Recent</p>
         <div className="grid grid-cols-2 gap-4 xl:grid-cols-3">
           {documents.map(document => (
