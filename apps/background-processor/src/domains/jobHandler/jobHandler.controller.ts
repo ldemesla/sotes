@@ -21,6 +21,7 @@ export class JobHandlerController {
 
   async handleProcessDocument(job: ProcessDocumentJob) {
     // Chunk the document
+    console.log(job);
     const chunks = await splitter.splitText(job.markdown);
 
     console.log(chunks);

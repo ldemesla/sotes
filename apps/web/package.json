@@ -8,6 +8,7 @@
     "db:migrate:up": "pnpm kysely migrate:up && pnpm db:typegen",
     "db:migrate": "tsx ./src/scripts/create-qdrant-collections.ts && pnpm kysely migrate:latest && pnpm db:typegen",
     "db:migrate:down": "pnpm kysely migrate:down",
+    "seed:run": "pnpm kysely seed:run",
     "db:typegen": "pnpm kysely-codegen --out-file ./../../packages/shared/src/types/database.types.ts",
     "dev": "tsx ./src/scripts/check-env.ts && concurrently \"pnpm db:start\" \"next dev --turbo\"",
     "build": "next build",

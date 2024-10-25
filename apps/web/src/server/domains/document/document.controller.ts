@@ -138,15 +138,14 @@ When the user asks a question about a specific topic, follow these steps:
   "title": "A title for the generated document"
 }
 
-Important: The "response" field should be formatted in HTML, suitable for use in a React-powered TipTap text editor. Use appropriate HTML tags to structure your response, such as <p> for paragraphs, <ul> and <li> for lists, and so on.
+Important: The "response" field should be formatted in HTML, suitable for use in a React-powered TipTap text editor. Use appropriate HTML tags to structure your response, such as <p> for paragraphs, <ul> and <li> for lists, and so on. For headings only use <h4>, <h5> and <h6> tags.
 
-Extremely important: Only use small headings starting with <h4> tags.
 
 Example of the desired output structure (content is purely illustrative):
 
 {
-  "response": "<h1>Analysis of Personal Notes on [Topic]</h1><p>Based on the analysis of your notes, it appears that [summary of thoughts].</p><h2>Correlations</h2><p>Interestingly, there seems to be a correlation between [idea A] and [idea B].</p><h2>Contradictions</h2><p>However, there's a contradiction in your notes regarding [topic C], where you state:</p><ul><li>[contradictory statement 1]</li><li>[contradictory statement 2]</li></ul><h2>Implications</h2><p>The implications of these thoughts suggest [potential insight or conclusion].</p><h2>Chronological Changes</h2><p>Over time, your thoughts on this topic have [evolved/remained consistent] in the following way: [description of changes].</p><h2>Emotional Tone</h2><p>The overall emotional tone in your notes regarding this topic seems to be [description of emotional tone].</p>",
-  "title": "Analysis of [Main Topic] from Personal Notes"
+  "response": "<h1>[Main Topic]</h1><p>[Engaging introduction to the topic, incorporating key ideas from the notes]</p><h2>Key Insights</h2><p>[Detailed exploration of the main points, weaving together information from the notes in a coherent narrative]</p><h2>Connections and Patterns</h2><p>[Discussion of how different ideas relate to each other, highlighting any interesting correlations discovered in the notes]</p><h2>Evolving Perspectives</h2><p>[If applicable, a section discussing how thoughts or opinions on the topic have changed over time, as reflected in the notes]</p><h2>Implications and Future Considerations</h2><p>[Exploration of potential consequences or future directions related to the topic, based on the insights from the notes]</p><h2>Personal Reflections</h2><p>[A section that captures the emotional tone or personal stance on the topic, as expressed in the notes]</p>",
+  "title": "[Main Topic]: Insights and Reflections"
 }
 
 Remember, the content of your response should be based solely on the information found in the user's notes. If there isn't enough information to answer the question, your response should reflect that.

@@ -16,6 +16,7 @@ export class DocumentRepository implements IDocumentRepository {
       .values({
         title: document.title,
         content: JSON.stringify(document.content),
+        markdown: document.markdown,
       })
       .returningAll()
       .executeTakeFirst() as Promise<Document>;
