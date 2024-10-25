@@ -2,7 +2,7 @@
 
 import "~/styles/index.css";
 
-import { Content, EditorContent } from "@tiptap/react";
+import { Content, EditorContent, JSONContent } from "@tiptap/react";
 import React, { useCallback, useEffect, useState } from "react";
 
 import { Document } from "~/server/domains/document/document.types";
@@ -73,15 +73,21 @@ export const BlockEditor = ({ aiToken, document }: { aiToken?: string; hasCollab
       if (!response.ok) {
         throw new Error("No AI token provided, please set TIPTAP_AI_SECRET in your environment");
       }
-      const improvedTranscript = await response.json();
+      const { jsonContent: improvedTranscript, documentHeadline } = (await response.json()) as {
+        jsonContent: JSONContent;
+        documentHeadline: string;
+      };
+      console.log(documentHeadline);
+
+      setTitle(documentHeadline);
 
       editor?.commands.setContent(improvedTranscript);
     };
 
     if (editor) {
       const editorContent = editor.getText();
-      improveTranscript(editorContent);
-      // Update the editor content with the improved transcript
+
+      if (editorContent.length > 100) improveTranscript(editorContent);
     }
   }, [editor]);
 
@@ -90,39 +96,43 @@ export const BlockEditor = ({ aiToken, document }: { aiToken?: string; hasCollab
   }
 
   return (
-    <div className="bg-card relative flex size-full flex-1 flex-col gap-12 overflow-hidden rounded-lg p-8 shadow-[0px_0px_3px_0px_rgba(0,0,0,0.25)]">
-      <div className="mx-auto flex w-full max-w-2xl flex-col gap-4 overflow-y-auto">
-        <p className="text-muted-foreground text-center">{formatDate(document.updated_at)}</p>
-        <input
-          className={cn("w-full border-none bg-transparent text-lg font-semibold focus:outline-none", {
-            hidden: title === "Untitled",
-          })}
-          value={title ?? ""}
-          onChange={e => {
-            setTitle(e.target.value);
-          }}
-          onBlur={e => {
-            updateDocument(document.id, {
-              title: e.target.value,
-            });
-          }}
-        />
-        <EditorContent editor={editor} className="w-full flex-1" />
-
-        <VoiceRecorder
-          addTranscriptToEditor={addTranscriptToEditor}
-          improveTranscript={improveTranscript}
-          previousTranscript={document.markdown}
-          updateDocumentTitle={(title: string) => {
-            if (title === "Untitled") {
-              setTitle(title);
+    <div className="bg-card relative size-full flex-1 overflow-hidden rounded-lg shadow-[0px_0px_3px_0px_rgba(0,0,0,0.25)]">
+      <div className="bg-card flex size-full flex-col gap-12 overflow-y-auto rounded-lg p-8">
+        <div className="mx-auto flex w-full max-w-2xl flex-col gap-2">
+          <p className="text-muted-foreground mb-4 text-center text-sm">{formatDate(document.updated_at)}</p>
+          <textarea
+            className={cn(
+              "w-full border-none text-black/90 bg-transparent text-2xl font-semibold focus:outline-none resize-none",
+              {
+                hidden: title === "Untitled",
+              },
+            )}
+            value={title ?? ""}
+            onChange={e => {
+              setTitle(e.target.value);
+            }}
+            onBlur={e => {
               updateDocument(document.id, {
-                title,
+                title: e.target.value,
               });
-            }
-          }}
-        />
+            }}
+          />
+          <EditorContent editor={editor} className="w-full flex-1" />
+        </div>
       </div>
+      <VoiceRecorder
+        addTranscriptToEditor={addTranscriptToEditor}
+        improveTranscript={improveTranscript}
+        previousTranscript={document.markdown}
+        updateDocumentTitle={(title: string) => {
+          if (title === "Untitled") {
+            setTitle(title);
+            updateDocument(document.id, {
+              title,
+            });
+          }
+        }}
+      />
     </div>
   );
 };
