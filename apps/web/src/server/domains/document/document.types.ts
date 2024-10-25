@@ -16,6 +16,7 @@ export interface IDocumentRepository {
 export type Document = Selectable<DocumentDB>;
 
 export type DocumentInput = {
+  id?: string;
   title: string;
   content: JSONContent;
   markdown: string;

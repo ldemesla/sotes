@@ -7,12 +7,14 @@ import { documentController } from "~/server/domains/document";
 const getDocument = async (id: string): Promise<Document> => {
   try {
     const document = await documentController.getDocument(id);
+
     if (document) return document;
   } catch (error) {
     console.error("Error fetching document:", error);
   }
 
   const newDocument = await documentController.createDocument({
+    id,
     title: "Untitled",
     content: {
       type: "doc",

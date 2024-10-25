@@ -1,4 +1,3 @@
-import { JSONContent } from "@tiptap/core";
 import {
   CreateDocumentInput,
   IDocumentRepository,
@@ -6,9 +5,11 @@ import {
   QueryDocumentsInput,
   UpdateDocumentInput,
 } from "./document.types";
+
+import { JSONContent } from "@tiptap/core";
 import { mainQueue } from "~/server/queues";
-import { qdrant } from "~/server/providers/qdrant";
 import { openai } from "~/server/providers/openai";
+import { qdrant } from "~/server/providers/qdrant";
 
 export class DocumentController {
   constructor(private readonly documentRepository: IDocumentRepository) {}
@@ -24,13 +25,14 @@ export class DocumentController {
   async updateDocument(id: string, document: UpdateDocumentInput) {
     const updatedDocument = await this.documentRepository.updateDocument(id, document);
 
-    await mainQueue.add("processDocument", {
-      content: updatedDocument.content as JSONContent,
-      title: updatedDocument.title ?? "",
-      id: updatedDocument.id,
-      type: "PROCESS_DOCUMENT",
-      markdown: updatedDocument.markdown ?? "",
-    });
+    if (updatedDocument?.content)
+      await mainQueue.add("processDocument", {
+        content: updatedDocument.content as JSONContent,
+        title: updatedDocument.title ?? "",
+        id: updatedDocument.id,
+        type: "PROCESS_DOCUMENT",
+        markdown: updatedDocument.markdown ?? "",
+      });
 
     return updatedDocument;
   }

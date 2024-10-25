@@ -30,7 +30,6 @@ const DEBUG = false;
 
 export const VoiceRecorder = ({
   addTranscriptToEditor,
-  previousTranscript,
   improveTranscript,
 }: {
   previousTranscript: string | null;
