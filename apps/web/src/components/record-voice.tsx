@@ -6,6 +6,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { Button } from "~/components/ui/button";
 import type { ItemType } from "@openai/realtime-api-beta/dist/lib/client.js";
+import { LogoIcon } from "./icons/LogoIcon";
 import { MicrophoneIcon } from "./icons/MicrophoneIcon";
 import { RealtimeClient } from "@openai/realtime-api-beta";
 import StopIcon from "./icons/StopIcon";
@@ -71,8 +72,9 @@ export const VoiceRecorder = ({
    */
   const [items, setItems] = useState<ItemType[]>([]);
   const { addContext } = useContextState();
-
   const [isConnected, setIsConnected] = useState(false);
+  // Add this new state for the last assistant message
+  const [lastAssistantMessage, setLastAssistantMessage] = useState<string | null>(null);
 
   // Add this line to create an audio element reference
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -146,7 +148,8 @@ export const VoiceRecorder = ({
         prefix_padding_ms: 500,
         silence_duration_ms: 1000,
       },
-      instructions: instructions(previousTranscript ?? ""),
+      instructions: instructions,
+      // instructions: instructions(previousTranscript ?? ""),
     });
 
     // Set transcription, otherwise we don't get user transcriptions back
@@ -195,6 +198,11 @@ export const VoiceRecorder = ({
       // Add user transcript to the editor
       if (item.role === "user" && item.formatted.transcript) {
         addTranscriptToEditor(item.formatted.transcript);
+      }
+
+      // Update the last assistant message when a new message from the assistant is received
+      if (item.role === "assistant" && (item.formatted.transcript || item.formatted.text)) {
+        setLastAssistantMessage(item.formatted.transcript || item.formatted.text);
       }
     });
 
@@ -250,6 +258,13 @@ export const VoiceRecorder = ({
       >
         {isConnected ? <StopIcon /> : <MicrophoneIcon />}
       </Button>
+
+      {lastAssistantMessage && (
+        <div className="absolute bottom-4 left-1/2 flex w-full max-w-md -translate-x-1/2 gap-2 rounded-lg  bg-[#CC155E]/20 p-4 text-[#CC155E] shadow-lg">
+          <LogoIcon className="size-6 shrink-0" />
+          <p className="text-sm">{lastAssistantMessage}</p>
+        </div>
+      )}
     </div>
   );
 };

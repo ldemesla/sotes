@@ -98,7 +98,7 @@ export const BlockEditor = ({ aiToken, document }: { aiToken?: string; hasCollab
 
   return (
     <div className="bg-card relative size-full flex-1 overflow-hidden rounded-lg shadow-[0px_0px_3px_0px_rgba(0,0,0,0.25)]">
-      <div className="bg-card flex size-full flex-col gap-12 overflow-y-auto rounded-lg p-8">
+      <div className="bg-card flex flex-col gap-12 overflow-y-auto rounded-lg p-8">
         <div className="mx-auto flex w-full max-w-2xl flex-col gap-2">
           <p className="text-muted-foreground mb-4 text-center text-sm">{formatDate(document.updated_at)}</p>
           <textarea
