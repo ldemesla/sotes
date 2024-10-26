@@ -102,8 +102,8 @@ export const BlockEditor = ({ aiToken, document }: { aiToken?: string; hasCollab
   }
 
   return (
-    <div className="bg-card shadow-section relative size-full flex-1 overflow-hidden rounded-lg">
-      <div className="bg-card flex flex-col gap-12 overflow-y-auto rounded-lg p-8">
+    <div className="bg-card shadow-section relative flex size-full flex-1 overflow-hidden rounded-lg">
+      <div className="flex w-full flex-col gap-12 overflow-y-auto p-8 focus-within:scroll-auto">
         <div className="mx-auto flex w-full max-w-2xl flex-col gap-2">
           <p className="text-muted-foreground mb-4 text-center text-sm">{formatDate(document.updated_at)}</p>
           <textarea
@@ -123,7 +123,7 @@ export const BlockEditor = ({ aiToken, document }: { aiToken?: string; hasCollab
               });
             }}
           />
-          <EditorContent editor={editor} className="w-full flex-1" />
+          <EditorContent editor={editor} className="w-full pb-32" />
         </div>
       </div>
       <VoiceRecorder

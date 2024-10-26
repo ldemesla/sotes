@@ -255,7 +255,7 @@ export const VoiceRecorder = ({
       </Button>
 
       {lastAssistantMessage && (
-        <div className="absolute bottom-4 left-1/2 flex w-full max-w-md -translate-x-1/2 gap-2 rounded-lg  bg-[#CC155E]/20 p-4 text-[#CC155E] shadow-lg">
+        <div className="absolute bottom-4 left-1/2 flex w-full max-w-md -translate-x-1/2 gap-2 rounded-lg  bg-[#CC155E]/20 p-4 text-[#CC155E] shadow-lg backdrop-blur">
           <LogoIcon className="size-6 shrink-0" />
           <p className="text-sm">{lastAssistantMessage}</p>
         </div>

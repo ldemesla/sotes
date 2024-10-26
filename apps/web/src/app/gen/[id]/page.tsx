@@ -1,7 +1,7 @@
 import { ContextBar } from "~/components/context-bar";
 import { ContextProvider } from "~/context/ContextProvider";
-import { documentController } from "~/server/domains/document";
 import GeneratedNote from "~/components/GeneratedNote/GeneratedNote";
+import { documentController } from "~/server/domains/document";
 
 export default async function GenPage({
   params,

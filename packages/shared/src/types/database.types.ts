@@ -43,7 +43,15 @@ export interface GeneratedNote {
   updated_at: Generated<Timestamp | null>;
 }
 
+export interface SotesPost {
+  created_at: Generated<Timestamp>;
+  id: Generated<number>;
+  name: string | null;
+  updated_at: Timestamp | null;
+}
+
 export interface DB {
   document: Document;
   generated_note: GeneratedNote;
+  sotes_post: SotesPost;
 }
